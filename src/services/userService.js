@@ -1,5 +1,5 @@
-import '../utils/handleJSONResponse.js'
-const API_URL = (import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3000")
+import handleJSONResponse from '../utils/handleJSONResponse.js'
+const API_URL = (import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3009")
 const BASE_URL = `${API_URL}/users`;
 
 // getAllUserData
@@ -15,7 +15,7 @@ export async function index(uid) {
 
         return await handleJSONResponse(res);
     } catch (err) {
-        handleError("@userSVC > index()", err);
+        console.error("@userSVC > index()", err);
     }
 }
 
@@ -27,7 +27,7 @@ export async function index(uid) {
     // getUserBudgets
 export async function getUserItem(uid, item, limit=10) {
     try {
-        const res = await fetch(BASE_URL+'/'+uid+'/'+item+'/'+limit, {
+        const res = await fetch(BASE_URL, {
             method: 'GET',
             headers: { 
                 "Content-Type": "application/json",
@@ -37,6 +37,6 @@ export async function getUserItem(uid, item, limit=10) {
 
         return await handleJSONResponse(res);
     } catch (err) {
-        handleError("@userSVC > notifications()", err);
+        console.error("@userSVC > notifications()", err);
     }
 }

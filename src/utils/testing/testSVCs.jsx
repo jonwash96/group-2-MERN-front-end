@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import '../../App.css'
+import { UserContext } from "../../contexts/UserContext";
 import * as expenseService from '../../services/expenseService'
 import * as authService from '../../services/authService'
 import * as userService from '../../services/userService'
+import { ImageIcn, errToast } from '../gizmos'
+import '../gizmos/bancroft-proto'
 
-export default function testSVCs() {
-    const [user, setUser] = useState();
+
+export default function TestSVCs() {
+    const { user, setUser } = useContext(UserContext);
     const [expenses, setExpenses] = useState();
     const [receipts, setReceipts] = useState();
     const [notifications, setNotifications] = useState();
@@ -13,29 +17,44 @@ export default function testSVCs() {
     const [uid, setUid] = useState();
 
     useEffect(() => {
-        try {
-            const fetchUser = async (uid) => {
-                const user = await userService.index(uid);
-                if (user.err) throw new Error(user.err);
-                console.log("@App > fetchUser:", user);
-                setUser(user);
-            }; fetchUser();
+        const signin = async () => {
+            const signedInUser = await authService.signIn({
+                username: 'Skywalker',
+                password: 'squid'
+            });
+            console.log("@signin", signedInUser);
+            setUser(signedInUser);
+            setUid(signedInUser._id);
+        }; signin();
+    },[])
+
+    // useEffect(() => {
+    //     if (!user?.username) return;
+    //     try {
+    //         const fetchUser = async () => {
+    //             const foundUser = await userService.index(uid);
+    //             if (foundUser.err) throw new Error(foundUser.err);
+    //             console.log("@TestSVCs > fetchUser:", foundUser);
+    //             setUser(foundUser);
+    //         }; fetchUser();
             
-        } catch (err) {console.error(err)};
-    }, []);
+    //     } catch (err) {console.error(err)};
+    // }, [user]);
 
     const fetchUserItem = async (uid, item, limit=null) => {
         try {
-            const item = await userService.getUserItem(uid, item, limit);
-            if (item.err) throw new Error(item.err);
-            console.log(`@App > fetchUserItem(${item}):`, item);
-            return item;
+            const foundItem = await userService.getUserItem(uid, item, limit);
+            if (foundItem.err) throw new Error(foundItem.err);
+            console.log(`@App > fetchUserItem(${foundItem}):`, foundItem);
+            return foundItem;
         } catch (err) {console.error(err)};
     };
     
+    /*
     useEffect(() => {
+        if (!user?.username) return;
         const limit = null;
-        const fetchAll = async () =>{
+        const fetchAll = async () => {
             const fetchExpenses = await fetchUserItem(uid, 'expenses', limit);
             setExpenses(fetchExpenses);
             const fetchNotifications = await fetchUserItem(uid, 'notifications', limit);
@@ -45,7 +64,8 @@ export default function testSVCs() {
             const fetchActivity = await fetchUserItem(uid, 'activity', limit);
             setActivity(fetchActivity);
         }; fetchAll();
-    }, [user]);
+    }, [uid]);
+    */
 
     return (
         <main>
@@ -53,29 +73,24 @@ export default function testSVCs() {
 
             <h2>User</h2>
             <ul>
-            {Object.entries(user).map(([key,value],idx) =>
-                <li key={`user-map-${idx}`}><strong>{key}: </strong>{value}</li>
-            )}
+                <li key="123"><strong>Username: </strong>{user?.username}</li>
+                <li key="456"><strong>DisplayName: </strong>{user?.displayName}</li>
+                <li key="789"><strong>Photo: </strong>
+                <ImageIcn role="profile-photo" src={user?.photo?.url} size="20px" />
+                {user?.photo?.title}
+                </li>
+                <li key="createdAt">{Number(1770733801553)._epochTo('recent')}</li>
             </ul>
 
             <h2>Expenses</h2>
             <ul>
-                {expenses.map(expense => 
-                    <li key="expense._id">
-                        <h3>{expense.name}</h3>
-                        <span><strong>Category: </strong>{expense.category}</span>
-                        <span><strong>description: </strong>{expense.description}</span>
-                        <span><strong>amount: </strong>{expense.amount}</span>
-                        <span><strong>payment Method: </strong>{expense.paymentMethod}</span>
-                        <span><strong>receipt: </strong><WebLink data={expense.receipt} /></span>
-                        <span><strong>merchant: </strong><Merchant data={expense.merchant} /></span>
-                        <span><strong>credits: </strong>{expense.credits}</span>
-                        <span><strong>notes: </strong><ul>{expense.notes.map(note => <li>{note}</li>)}</ul></span>
-                        <span><strong>webLinks: </strong><WebLink data={expense.webLinks} /></span>
-                        <span><strong>status: </strong>{expense.status}</span>
-                        <span><strong>owener: </strong>{expense.owner}</span>
-                        <span><strong>created At: </strong>{expense.created_At}</span>
-                        <span><strong>updated At: </strong>{expense.updated_At}</span>
+                {user?.expenses.map(expense =>
+                    <li key={expense._id}>
+                        <ul>{Object.entries(expense).map(([key,value],idx) => 
+                            typeof value !== 'object'
+                            ? <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>{value}</li>
+                            : <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>~Object~</li>
+                        )}</ul>
                     </li>
                 )}
             </ul>
@@ -83,10 +98,12 @@ export default function testSVCs() {
 
             <h2>Notifications</h2>
             <ul>
-                {notifications.map(notification =>
-                    <li>
-                        <ul>{Object.entries(notification).map(([key,value],idx) =>
-                            <li key={`notif-map-${idx}`}><strong>{key}</strong>{value}</li>
+                {user?.notifications.map(notification =>
+                    <li key={notification._id}>
+                        <ul>{Object.entries(notification).map(([key,value],idx) => 
+                            typeof value !== 'object'
+                            ? <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>{value}</li>
+                            : <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>~Object~</li>
                         )}</ul>
                     </li>
                 )}
@@ -94,10 +111,12 @@ export default function testSVCs() {
             
             <h2>Activity</h2>
             <ul>
-                {activity.map(datum =>
-                    <li>
+                {user?.activity.map(datum =>
+                    <li key={datum._id}>
                         <ul>{Object.entries(datum).map(([key,value],idx) =>
-                            <li key={`notif-map-${idx}`}><strong>{key}</strong>{value}</li>
+                            typeof value !== 'object'
+                            ? <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>{value}</li>
+                            : <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>~Object~</li>
                         )}</ul>
                     </li>
                 )}
@@ -105,10 +124,12 @@ export default function testSVCs() {
             
             <h2>Receipts</h2>
             <ul>
-                {receipts.map(receipt =>
-                    <li>
+                {user?.receipts.map(receipt =>
+                    <li key={receipt._id}>
                         <ul>{Object.entries(receipt).map(([key,value],idx) =>
-                            <li key={`notif-map-${idx}`}><strong>{key}</strong>{value}</li>
+                            typeof value !== 'object'
+                            ? <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>{value}</li>
+                            : <li key={`notif-map-${idx}`}><strong>{key._camelToTitle()}: </strong>~Object~</li>
                         )}</ul>
                     </li>
                 )}

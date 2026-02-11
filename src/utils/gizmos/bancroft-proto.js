@@ -29,7 +29,7 @@ String.prototype._camelToTitle = function() {
     };
     const strWithSpaces = str.flat().join('');
     str = strWithSpaces.split(' ');
-    str[0] = str[0].toTitleCase();
+    str[0] = str[0]._toTitleCase();
     return str.join(' ');
 }
 
@@ -39,10 +39,11 @@ String.prototype._normalizeCSV = function() {
     } else return this
 }
 
-String.prototype.epochTo = _epochTo;
-Number.prototype.epochTo = _epochTo;
-function _epochTo(format) {
-    const date = new Date(date);
+String.prototype._epochTo = epochTo;
+Number.prototype._epochTo = epochTo;
+function epochTo(format) {
+    if (!new Date(this)) return;
+    const date = new Date(this);
     const diff = Date.now() - Number(this);
     const oneDay = 86400000;
     const oneHour = 3600000;

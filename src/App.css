@@ -1,5 +1,10 @@
-
 .flyout-menu {
   &:hover > ul, &:active > ul {display:block;}
   & li:hover {cursor:pointer;}
+}
+
+.img-icn {
+  display: flex;
+  justify-self: center;
+  align-items: center;
 }
