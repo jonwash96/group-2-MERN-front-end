@@ -1,0 +1,212 @@
+body {
+    display: grid;
+    grid-template:
+        "headbar headbar" 40px
+        "nav main" calc(100vh - 40px) / 300px auto;
+    height:100vh;
+    overflow-y: hidden;
+}
+
+#headbar {grid-area:headbar;}
+
+nav {
+    grid-area: nav;
+    background-color: #faf8f8;
+    max-width: 100%;
+    height:100%;
+    display: flex;
+    flex-direction:column;
+    gap:1em;
+    font-size: 16pt;
+    font-weight: bold;
+    
+    & .nav-item {color:grey;padding:10px}
+    & .nav-item:hover {background-color: #eee;color:#569;}
+    & a:hover {text-decoration:none;}
+    &.show {width:100%;}
+    &.hide {width:40px;}
+}
+
+main.dashboard {
+    grid-area:main;
+    padding:10px;
+    display:grid;
+    grid-template: 
+        "header header" 1fr
+        "ingredients pantry" 4fr
+        "suggested suggested" 1fr
+        "recipes recipes" 1fr / 2fr 3fr;
+
+    & section#ingredients {grid-area:ingredients;}
+    & section#pantry {grid-area:pantry;}
+    & section#suggested-recipes {grid-area:suggested;}
+    & section#user-recipes {grid-area:recipes;}
+}
+
+main.ingredients {
+    grid-area:main;
+    padding:10px;
+    display:grid;
+    overflow-x: hidden;
+    grid-template: 
+        "header" 1fr 
+        "ingredients" 3fr 
+        "pantry" 1fr / 100%;
+
+    & section#ingredients {
+        grid-area: ingredients;
+        width: 100%;
+        overflow-y: hidden;
+        
+        & .ingredients-grid {
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap:2em;
+            overflow-y: scroll;
+        }
+    }
+    
+    & section#pantry {
+        grid-area: pantry;
+
+        & h2 {margin-bottom:0;}
+        & .title-block a button {transform:translateY(50%);}
+        & .pantry-scroller {
+            display: flex;
+            flex-direction:row;
+            flex-wrap: nowrap;
+            overflow-x: scroll;
+            gap:2em;
+        }
+    }
+}
+
+form.main {
+    grid-area:main;
+    margin:0 auto;
+    max-width:900px;
+    max-height:100%;
+    overflow-y: scroll;
+    padding:30px;
+    display:flex;
+    flex-direction: column;
+}
+
+header {
+    grid-area:header;
+    display:grid;
+    grid-template: auto / 50% 50%;
+    & .btn-block {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: end;
+        margin-right: 5vw;
+    }
+}
+
+.card {
+    border-radius: 8px;
+    & p {margin:0;}
+    & p.name {font-size: 1.2em; font-weight: 700;}
+}
+
+.card.item {
+    width:200px;
+    box-shadow: 0 0 25px #0001;
+    overflow: hidden;
+
+    & img {height: 80px; aspect-ratio:1/1; border-radius:50%;}
+    & .top, & .action {padding:15px;}
+    & .top {height:160px;}
+    & .action {
+        text-align: center;
+        width:calc(100% - 30px);
+        height:20px;
+        position:relative;
+        bottom:0;
+        transition: background-color 150ms ease-in-out;
+    }
+    & .action:hover {background-color: #fb0;}
+}
+
+.card.small {
+    width:200px;
+    box-shadow: 0 0 25px #0001;
+    overflow: hidden;
+    padding:15px;
+    display:grid;
+    grid-template: auto / 1fr 2fr;
+    margin:25px 0;
+
+    & img {height: 60px; aspect-ratio:1/1; border-radius:50%;}
+}
+
+.pantry-scroller {
+    display: flex;
+    gap:1em;
+}
+
+.page-instruction {margin: 0;}
+.page-info {margin:0;padding:0;color:grey;}
+
+#pantry-show-modal, #ingredient-modal {
+    width:720px;
+    border:none;
+    border-radius: 8px;
+    box-shadow: 0 0 25px #0003;
+    display:grid;
+    grid-template:
+        "header header header" 200px
+        "img section section" auto / 1fr 1fr 1fr;
+    
+    & header {
+        grid-area:header;
+        width:100%;
+    }
+    & .left {grid-area:img}
+    & .right {grid-area:section;}
+    & .content {grid-area: section;}
+
+    & img {
+        height:250px;
+        border-radius: 50%;
+    }
+    & section {
+        margin-left:3em;
+    }
+
+    & .close-btn {
+        position:absolute;
+        right:10px;
+        top:10px;
+        & button {background-color: transparent;border:none;}
+    }
+}
+
+#pantry-edit-modal, #ingredient-edit-modal {
+    border:none;
+    border-radius: 8px;
+    box-shadow: 0 0 25px #0003;
+    & form {
+        width:720px;
+        display:grid;
+        grid-template:
+            "header" 100px
+            "section" auto / 100%;
+        
+        & header {
+            grid-area:header;
+            display:grid;
+            grid-template: auto / 2fr 1fr;
+        }
+        & section {
+            grid-area: section;
+            margin: 2em 0;
+            display:flex;
+            flex-direction:column;
+        }
+    }
+}
