@@ -20,9 +20,10 @@ function App() {
 
   useEffect(() => {
     const signin = async () => {
+
       const signedInUser = await authService.signIn({
-        username: 'Skywalker',
-        password: 'squid'
+        username: import.meta.env.VITE_USERNAME,
+        password: import.meta.env.VITE_PASSWORD
       });
       console.log("@signin", signedInUser);
       setUser(signedInUser);

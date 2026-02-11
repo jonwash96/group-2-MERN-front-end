@@ -1,4 +1,8 @@
 .flyout-menu {
+  & ul {
+    display:none;
+    background-color: var(--bg);
+  }
   &:hover > ul, &:active > ul {display:block;}
   & li:hover {cursor:pointer;}
 }
