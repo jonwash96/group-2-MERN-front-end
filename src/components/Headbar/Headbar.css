@@ -4,6 +4,7 @@
     width:100%;
     height:40px;
     padding: 0 10px;
+    border: 1px solid cyan;
 
     & > div {display:flex; align-items:center; gap:1em;}
     & .left {justify-content:flex-start;font-size: 1.75em;font-weight: bold; & a {color:#0b5;}}
@@ -19,7 +20,6 @@
         grid-template: 100% / 40px auto;
         border: 1px solid grey;
         border-radius:6px;
-        bxsha
 
         & div {
             display:flex;

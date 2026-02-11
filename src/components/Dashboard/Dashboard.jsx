@@ -6,6 +6,7 @@ import { ImageIcn, errToast } from '../../utils/gizmos'
 import { toast } from 'react-toastify'
 import { UserContext } from "../../contexts/UserContext";
 import './Dashboard.css'
+import * as data from './data'
 
 export default function Dashboard() {
 	const navigate = useNavigate();
@@ -14,143 +15,113 @@ export default function Dashboard() {
 
     const handleChange = (e) => {setInput({ ...input, [e.target.name]:e.target.value })};
     const handleSearch = () => {console.log("@Headbar > handleSearch", input.search)};
+	const handleCreateExpense = () => {};
 
 	return(
 		<main className="dashboard">
-        <header>
-            <div className="left">
-                <h1><span className="thin">Hello,</span> {user.displayName}</h1>
-                <p>Explore Your Recipes, Favourite Ingredients, and More.</p>
+        <section id="top">
+            <div id="total-spent" className="card med">
+				<header>
+					<h6 className="title">Total Spent</h6>
+					<ImageIcn role="ph" size="12pt" />
+				</header>
+				<p className="money-block amount">{"1,256.35"}</p>
+                <div className="info-block">
+					<span className="compare-ratio">
+						<span className="arrow" style={{color:'inherit'}}>⬆</span>
+						<span className="Amount" style={{color:'inherit'}}>{"12"}%</span>
+					</span>
+					<span className="detail">vs last month</span>
+                </div>
             </div>
-            <form className="btn-block" action="/recipes/new" method="GET">
-                <button className="action-btn">➕ New Recipe</button>
-            </form>
-        </header>
 
-        <section id="ingredients">
-            <div className="section-head">
-                <h2>My ingredients</h2>
-                <button className="view-full">
-                    <div>blank</div>
-                </button>
-                <div>
-                    <div id="view-favoriteIngredients">Favourites</div>
-                    <div id="view-myIngredients">Added By Me</div>
+            <div id="budget-left" className="card med">
+				<header>
+					<h6 className="title">Budget Left</h6>
+					<ImageIcn role="ph" size="12pt" />
+				</header>
+				<p className="money-block amount">{"1,256.35"}</p>
+                <div className="info-block">
+					<div className="progress-bar">
+						<div className="progress" style={{color:'inherit'}}></div>
+					</div>
+					<div className="detail">{"82"}% used</div>
                 </div>
             </div>
-            <section className="slider">
-                <div className="ingredients-grid">
-                    {user.expenses.map((expense,idx) => {
-                        <div className="ingredient card" name={expense.title} listNumber={idx}>
-                            <p>blank</p>
-                            <p>{expense.title}</p>
-                            {expense.img
-                                ? <img src={expense.img} alt={expense.title} />
-                                : <img src="/svg/noimg.svg" />
-                            }
-                        </div>
-					})}
-                </div>
-                <div className="ingredients-grid">
-                    {user.expenses.map((expense,idx) => {
-                        <div className="ingredient card" name={expense.title} listNumber={idx}>
-                            <p>{expense.amount || ''}</p>
-                            <p>{expense.title}</p>
-                            {expense.img
-                                ? <img src={expense.img} alt={expense.title} />
-                                : <img src="/svg/noimg.svg" />
-                            }
-                        </div>
-                    })}
-                </div>
-            </section>
-        </section>
 
-        <section id="pantry">
-            <div className="section-head">
-                <h2>My Pantry</h2>
+            <div id="monthly-recurring" className="card med">
+				<header>
+					<h6 className="title">Monthly Recurring</h6>
+					<ImageIcn role="ph" size="12pt" />
+				</header>
+				<p className="money-block amount">{"1,256.35"}</p>
+                <div className="info-block">
+					<span className="detail">{"5"} active subscriptions</span>
+                </div>
             </div>
-            <div className="pantry-scroller">
-                {user.expenses.map((expense,idx) => {
-                    <div className="item card" name={expense.title} listNumber={idx}>
-                        <a href="/user/pantry/dashboard/">
-                            <div className="top">
-                                {expense.img
-                                    ? <img src={expense.img} alt={expense.title} />
-                                    : <img src="/svg/noimg.svg" />
-                                }
-                                <p className="title">{expense.title}</p>
-                                <p className="category">{expense.ingredientID?.category}</p>
-                                <p className="quantity">{expense.amount} left</p>
-                            </div>
-                        </a>
-                        <hr />
-                        <a href="/search/?ingredients" className="bottom">
-                            <div className="action">
-                                Browse Recipes
-                                <img src="/svg/noimg.svg" />
-                            </div>
-                        </a>
+		</section>
+
+        <section id="middle">
+            <div id="new-expense" className="card med">
+				<header>
+                	<h5 className="title">Add New Expense</h5>
+				</header>
+               	<form onSubmit={handleCreateExpense}>
+					<label htmlFor="AE-amount">Amount</label>
+					<input id="AE-amount" type="number" anme="amount" onChange={handleChange} value={input.amount} required />
+					<label htmlFor="AE-category">Category</label>
+					<input id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required />
+					<label htmlFor="AE-date">Date</label>
+					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
+					<div className="recurring-block">
+						<label htmlFor="AE-recurring">recurring</label>
+						<input id="AE-recurring" type="checkbox" name="recurring" onChange={handleChange} value={input.recurring} required />
+					</div>
+					<button type="submit">Add Expense </button>
+			   	</form>
+            </div>
+
+            <div className="card large">
+				<header>
+					<h5 className="title">Add New Expense</h5>
+					<Link to="/expenses/report">View Report</Link>
+				</header>
+				<figcaption>
+					{data.expenseCategories.map(([key,col]) =>
+						<div>
+							<div key={"fig-cap-"+key} style={{'--col':col}}>{key}</div>
+						</div>
+					)}
+				</figcaption>
+				<figure>
+					<div clasName="pie-wrapper">
+						<div className="pie-slices"></div>
+					</div>
+				</figure>
+            </div>
+		</section>
+
+        <section id="bottom">
+            <div className="card med">
+                <div className="title">Title Content Goes Here</div>
+                <div className="money-sign">$</div>
+                <div className="amount">325/<span>$1,256.35</span></div>
+                <div className="members">
+                    <div className="chip">
+                        <ImageIcn role="ph" size="12pt" />
+                        <span>Member Name</span>
                     </div>
-                })}
+                    <div className="chip">
+                        <ImageIcn role="ph" size="12pt" />
+                        <span>Member Name</span>
+                    </div>
+                    <span>+ # more</span>
+                </div>
             </div>
-        </section>
+		</section>
+
 
         <section id="suggested-recipes">
-            <div className="section-head">
-                <h2>Suggested Recipes</h2>
-                <p>Based on your activity</p>
-                <button>See More</button>
-            </div>
-            {user.suggested ? <>
-                <div className="suggested-recipes-grid">
-                    {user.expenses.map((expense,idx) => {
-                        <div className="recipe card small" name={expense.title} listNumber={idx}>
-                            <img src={expense.img} alt={expense.title} />
-                            <p>{expense.title}</p>
-                            <p>{expense.amount}</p>
-                            <div className="chips">
-                                <div className="chip"><img src="/svg/noimg.svg" />Prep: {recipe.prepTime}</div>
-                                <div className="chip"><img src="/svg/noimg.svg" />Cook: {recipe.cookTime}</div>
-                                <div className="chip"><img src="/svg/noimg.svg" />Serves: {recipe.servings}</div>
-                            </div>
-                        </div>
-                    })}
-                    <div className="next">
-					<img src="/svg/noimg.svg" />
-                    </div>
-                </div>
-            </> : <>
-                <h4>No suggested Recipes</h4>
-            </>}
-        </section>
-        
-        <section id="user-recipes">
-            <div className="section-head">
-                <h2>My Recipes</h2>
-                <button>View All</button>
-            </div>
-            <div className="user-recipes-grid">
-                {user.expenses.length > 0 ? <>
-                    {user.expenses.map((expense,idx) => {
-                        <div className="recipe card small" name={expense.title} listNumber={idx}>
-                            <img src={expense.img} alt={expense.title} />
-                            <p>{expense.title}</p>
-                            <p>{expense.amount}</p>
-                            <div className="chips">
-                                <div className="chip"><img src="/svg/noimg.svg" />Prep: {expense.prepTime}</div>
-                                <div className="chip"><img src="/svg/noimg.svg" />Cook: {expense.cookTime}</div>
-                                <div className="chip"><img src="/svg/noimg.svg" />Serves: {expense.servings}</div>
-                            </div>
-                        </div>
-                    })}
-                    <div className="next">
-                        <img src="/svg/noimg.svg" />
-                    </div>
-                </> : <>
-                    <h4>No Recipes to Show</h4>
-                </>}
-            </div>
         </section>
     </main>
 	)

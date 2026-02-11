@@ -17,6 +17,10 @@ export function ImageIcn(props) {
 		...props.istyle,
 		height: size,
 	}
+	let tstyle = {
+		...props.tstyle,
+		fontSize: size==='100%' ? 'inherit' : size
+	}
 
 	switch (props.role) {
 		case 'profile-photo': {
@@ -26,16 +30,18 @@ export function ImageIcn(props) {
 		}; break;
 
 		case 'notifications': {
-			src = '/svg/notification-bell.svg' || '/svg/noimg.svg';
+			src = '/svg/noimg.svg';
 			if (props.data==0) data = null;
 		}; break;
+
+		case 'ph': src = '/svg/noimg.svg'; break;
 
 		default: src = props.src;
 	}
 
 	return(
 		<div className={`img-icn ${props.role}`} data={data} style={dstyle}>
-			{src ? <img src={src} style={istyle} /> : <div>{content || ""}</div>}
+			{src ? <img src={src} style={istyle} /> : <div style={tstyle}>{content || ""}</div>}
 		</div>
 	)
 }

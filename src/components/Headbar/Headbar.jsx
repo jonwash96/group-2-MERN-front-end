@@ -8,7 +8,7 @@ import { UserContext } from "../../contexts/UserContext";
 import './Headbar.css'
 import '../../utils/gizmos/bancroft-proto'
 
-export default function Headbar(params) {
+export default function Headbar() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [input, setInput] = useState({});
@@ -31,7 +31,7 @@ export default function Headbar(params) {
 
             <div className="center">
                 <form action={handleSearch} className="searchbar">
-                    <ImageIcn content="🔍" />
+                    <ImageIcn content="🔍" size=".6em" />
                     <input onChange={handleChange} value={input.search} name="search" type="search" placeholder="Search" />
                 </form>
             </div>
@@ -58,7 +58,7 @@ export default function Headbar(params) {
                     </div>
 
                     <div id="notification-menu" className="flyout-menu">
-                        <ImageIcn role="notifications" data={user.notifications.length} />
+                        <ImageIcn role="notifications" data={user.notifications.length} size="25px" />
                         <ul> {/* ⏬ Done this way so that they can transition between show/hide */}
                             <NotificationsList 
                                 className={selectedNotif ? "show-notif" : "show-notif-list"} 

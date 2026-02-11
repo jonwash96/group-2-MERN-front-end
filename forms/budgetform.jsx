@@ -348,4 +348,4 @@ try {
   );
 
 
-export default BudgetForm;
+export { BudgetForm };
