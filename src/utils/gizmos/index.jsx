@@ -12,6 +12,7 @@ export function ImageIcn(props) {
 
 	let dstyle = {
 		...props.dstyle,
+		overflow:'hidden',
 	}
 	let istyle = {
 		...props.istyle,
@@ -21,6 +22,7 @@ export function ImageIcn(props) {
 		...props.tstyle,
 		fontSize: size==='100%' ? 'inherit' : size
 	}
+	if (props.options?.split(' ').includes('round')) dstyle['borderRadius'] = '50%';
 
 	switch (props.role) {
 		case 'profile-photo': {
