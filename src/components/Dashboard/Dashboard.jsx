@@ -89,10 +89,17 @@ export default function Dashboard() {
                 	<h5 className="title">Add New Expense</h5>
 				</header>
                	<form onSubmit={handleCreateExpense}>
+					<label htmlFor="AE-title">Title</label>
+					<input id="AE-title" type="text" name="title" onChange={handleChange} value={input.title} required />
 					<label htmlFor="AE-amount">Amount</label>
-					<input id="AE-amount" type="number" anme="amount" onChange={handleChange} value={input.amount} required />
+					<input id="AE-amount" type="number" name="amount" onChange={handleChange} value={input.amount} required />
 					<label htmlFor="AE-category">Category</label>
-					<input id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required />
+					<select id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required>
+						<option value="">--Select a Category</option>
+						{data.expenseCategories.map(category =>
+							<option value={category[0]}>{category[0]}</option>
+						)}
+					</select>
 					<label htmlFor="AE-date">Date</label>
 					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
 					<div className="recurring-block">

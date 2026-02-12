@@ -16,9 +16,9 @@ main.dashboard {
 		"bottom" calc((66% + (33% /2)) /2) / 100%;
 	/* & * {border: 1px solid grey;} */
 
-    & section#top {grid-area:top; border: 1px solid red;}
-    & section#middle {grid-area:middle; border: 1px solid green;}
-    & section#bottom {grid-area:bottom; border: 1px solid blue;}
+    & section#top {grid-area:top;}
+    & section#middle {grid-area:middle;}
+    & section#bottom {grid-area:bottom;}
 
 	& h5 {
 		margin:0; 
@@ -104,7 +104,8 @@ main.dashboard > section#middle {
 		form {
 			display:flex;
 			flex-direction:column;
-			height:100%;
+			height:calc(100% - 50px);
+			overflow-y: scroll;
 
 			& label, button {margin-bottom:3px;}
 			& .recurring-block {
@@ -113,14 +114,19 @@ main.dashboard > section#middle {
 				justify-content: space-between;
 				align-items: baseline;
 			}
-			& input, button {
+			& input, button, select {
+				padding:1% 10px;
+				border-radius:3px;
+				border:1px solid var(--bgf2);
 				height:10%;
 				max-height: 40px;
 				margin-bottom:4%;
 			}
 			& input[type=checkbox] {
 				margin:0;
+				padding:clamp(4px, 2%, .75em);
 				height:10pt;
+				aspect-ratio: 1/1;
 			}
 		}
 	}
