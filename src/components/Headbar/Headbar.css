@@ -20,6 +20,7 @@
         grid-template: 100% / 40px auto;
         border: 1px solid grey;
         border-radius:6px;
+        background-color: var(--bg);
 
         & div {
             display:flex;
@@ -30,6 +31,7 @@
 
         & input {
             border:none;
+            background-color: var(--bg);
         }
         & button {
             background-color: white;

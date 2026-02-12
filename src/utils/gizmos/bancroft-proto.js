@@ -64,3 +64,19 @@ function epochTo(format) {
         }
     }
 }
+
+String.prototype._toOrdered = toOrdered;
+Number.prototype._toOrdered = toOrdered;
+function toOrdered(which=0) {
+    if (!/\d/g.test(this)) return;
+    let num;
+    if (typeof which === 'number') num = String(this).match(/\d+/g)[which]
+    if (typeof which === 'string') num = String(this).match(/\d+/g).join('');
+
+    if (num == 11) return '11th'
+    if (/\d*1$/g.test(num)) return num+'st'
+    if (num == 2) return '2nd'
+    if (num == 3) return '3rd'
+    if (num == 3) return '3rd'
+    return num+'th'
+}
