@@ -4,11 +4,13 @@ import TestSVCs from './utils/testing/testSVCs'
 import { UserContext } from "./contexts/UserContext";
 import Headbar from './components/Headbar/Headbar.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
+import LandingPage from './pages/LandingPage/LandingPage.jsx'
 import * as expenseService from './services/expenseService'
 import * as authService from './services/authService'
 import * as userService from './services/userService'
 import { ImageIcn, errToast } from './utils/gizmos'
 import './utils/gizmos/bancroft-proto'
+
 
 function App() {
   const { user, setUser } = useContext(UserContext);
@@ -34,8 +36,9 @@ function App() {
   if (!user?.username) return <p>Loading. . .</p>;
   return (
     <>
-      <Headbar />
-      <Dashboard />
+      <LandingPage />
+      {/* <Headbar />
+      <Dashboard /> */}
     </>
   )
 }

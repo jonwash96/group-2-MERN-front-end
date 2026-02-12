@@ -1,8 +1,6 @@
 .page-instruction {margin: 0;}
 .page-info {margin:0;padding:0;color:grey;}
 
-body {overflow:hidden;}
-
 main.dashboard {
 	background-color: var(--bgb2);
     grid-area:main;
