@@ -9,14 +9,25 @@ import * as authService from './services/authService'
 import * as userService from './services/userService'
 import { ImageIcn, errToast } from './utils/gizmos'
 import './utils/gizmos/bancroft-proto'
+import { UNSAFE_ErrorResponseImpl } from 'react-router';
+
+function getCurrentMonthValue(date = new Date()) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  return `${y}-${m}`; // "2026-02"
+}
 
 function App() {
   const { user, setUser } = useContext(UserContext);
-  const [expenses, setExpenses] = useState();
+  const [expenses, setExpenses] = useState([]);
   const [receipts, setReceipts] = useState();
   const [notifications, setNotifications] = useState();
   const [activity, setActivity] = useState();
   const [uid, setUid] = useState();
+  const [month, setMonth] = useState(getCurrentMonthValue)
+  const [categoryBreakdown, setCategoryBreakdown] = useState([]) // from /expenses-by category
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const signin = async () => {
@@ -31,11 +42,49 @@ function App() {
     }; signin();
   }, [])
 
+  useEffect(()=>{
+    const loadDashboardData = async () => {
+      if (!user?.id) return;
+
+      setLoading(true);
+      setError("");
+
+      try {
+        const [exp, byCat] = await Promise.all([
+          expenseService.index({month}),
+          expenseService.byCategory((month)),
+        ]);
+
+        setExpenses(exp);
+        setCategoryBreakdown(byCat?.categories ?? byCat ?? []);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDashboardData();
+  }, [user?.id, month]);
+
+  const monthTotal = useMemo(
+    () => expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
+    [expenses]
+  );
+
   if (!user?.username) return <p>Loading. . .</p>;
   return (
     <>
       <Headbar />
-      <Dashboard />
+      <Dashboard
+      month={month}
+      setMonth={setMonth}
+      loading={loading}
+      error={error}
+      expenses={expenses}
+      categoryBreakdown={categoryBreakdown}
+      monthTotal={monthTotal}
+      />
     </>
   )
 }
