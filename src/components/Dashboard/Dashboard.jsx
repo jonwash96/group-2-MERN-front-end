@@ -1,53 +1,174 @@
-import { useState, useEffect, useContext } from 'react'
-import { styled } from 'styled-components'
+import { useState, useEffect, useContext, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router'
 import '../../utils/gizmos/bancroft-proto'
-import { ImageIcn, errToast } from '../../utils/gizmos'
-import { toast } from 'react-toastify'
+import { ImageIcn } from '../../utils/gizmos'
 import { UserContext } from "../../contexts/UserContext";
 import './Dashboard.css'
 import * as data from './data'
+import * as expenseService from "../../services/expenseService"
+import * as budgetsService from "../../services/budgetsService"
+
+function getCurrentMonthValue(date = new Date()) {
+	const y = date.getFullYear();
+	const m = String(date.getMonth() + 1).padStart(2, "0");
+	return `${y}-${m}`;
+}
+
+function money(n) {
+	const num = Number(n) || 0;
+	return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
 
 export default function Dashboard() {
 	const navigate = useNavigate();
-    const { user, setUser } = useContext(UserContext);
-    const [input, setInput] = useState({});
+    const { user } = useContext(UserContext);
+	const [month, setMonth] = useState(getCurrentMonthValue())
+    const [input, setInput] = useState({
+		title: "",
+		amount: "",
+		category: "",
+		date: "",
+		isRecurring: false,
+	});
 
-	// FAKE TESTING DATA
-	const [recentTransactions, setRecentTransactions] = useState([
-		{_id:Math.random(), title:'dummy1', category:'dCat1', amount:432.56},
-		{_id:Math.random(), title:'dummy2', category:'dCat2', amount:26.85},
-		{_id:Math.random(), title:'dummy3', category:'dCat3', amount:4323.99},
-		{_id:Math.random(), title:'dummy4', category:'dCat4', amount:6.03},
-	]);
-	const [recurringExpenses, setRecurringExpenses] = useState([
-		{_id:Math.random(), title:'Internet Bill', period:'monthly', date:1, amount:60, status:true},
-		{_id:Math.random(), title:'Gym Bill', period:'monthly', date:15, amount:40, status:false},
-		{_id:Math.random(), title:'SuperCloud Bill', period:'quarterly', date:28, amount:10, status:true},
-		{_id:Math.random(), title:'Netflix', period:'monthly', date:1, amount:23, status:false},
-		{_id:Math.random(), title:'Youtube Premium', period:'monthly', date:18, amount:60, status:true},
-		{_id:Math.random(), title:'Insurance', period:'monthly', date:1, amount:120, status:true},
-		{_id:Math.random(), title:'Github Pro', period:'monthly', date:12, amount:4, status:true},
-	]);
-	const budget = {
-		percentage: 36,
-		monthlyLimit: 2000,
-		remaining: 720
-	}
+	// Real data
+	const [expenses, setExpenses] = useState([]);
+	const [categoryBreakdown, setCategoryBreakdown] = useState([]); // from /expenses/by-category
+	const [budgets, setBudgets] = useState([]);
 
-    const handleChange = (e) => {setInput({ ...input, [e.target.name]:e.target.value })};
-    const handleSearch = () => {console.log("@Headbar > handleSearch", input.search)};
-	const handleCreateExpense = () => {};
+	// UI state
+	const [loading, setLoading] = useState(true);
+	const [err, setErr] = useState("");
+
+	// Load expenses, category breakdown and budgets for the selected month
+	useEffect(() => {
+		const load = async () => {
+			setLoading(true);
+			setErr("");
+
+			try {
+				const [exp, byCat, budRes] = await Promise.all([
+					expenseService.index({ month }),
+					expenseService.byCategory({ month }),
+					budgetsService.index(), // returns { budgets }
+				]);
+
+				setExpenses(Array.isArray(exp) ? exp : []);
+				setCategoryBreakdown(byCat?.categories ?? []);
+				setBudgets(budRes?.budgets ?? []);
+			} catch (error) {
+				setErr(error?.message || "Failed to load dashboard")
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		load();
+	}, [month]);
+
+	// Derived metrics
+	const totalSpent = useMemo(
+       	() => expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
+       	[expenses]
+    );
+
+	const recurringExpenses = useMemo(
+		() => expenses.filter((e) => e.isRecurring || e.recurringExpense),
+		[expenses]
+	)
+
+	const recurringTotal = useMemo(
+        () => recurringExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
+        [recurringExpenses]
+    );
+
+
+	const recurringCount = recurringExpenses.length;
+
+	// Build map: category -> spent total (from /expenses/by-category)
+	const spentByCategoryMap = useMemo(() => {
+		const m = new Map();
+		for (const row of categoryBreakdown) m.set(row.category, Number(row.total) || 0);
+		return m;
+	}, [categoryBreakdown])
+
+	// Total monthly budget and remaining
+  const budgetTotals = useMemo(() => {
+    const totalLimit = budgets.reduce((sum, b) => sum + (Number(b.monthlyLimit) || 0), 0);
+
+    // Only count spending for categories that have budgets
+    const spentTowardBudgets = budgets.reduce((sum, b) => {
+      return sum + (spentByCategoryMap.get(b.category) || 0);
+    }, 0);
+
+    const remaining = Math.max(0, totalLimit - spentTowardBudgets);
+    const usedPct = totalLimit > 0 ? Math.min((spentTowardBudgets / totalLimit) * 100, 100) : 0;
+
+    return { totalLimit, spentTowardBudgets, remaining, usedPct };
+  }, [budgets, spentByCategoryMap]);
+
+  // Recent transactions list (use real expenses)
+  const recentTransactions = useMemo(() => expenses.slice(0, 6), [expenses]);
+
+    const handleChange = (e) => {
+    const { name, type, value, checked } = e.target;
+    setInput((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
+
+  const handleCreateExpense = async (e) => {
+    e.preventDefault();
+    setErr("");
+
+    try {
+      const payload = {
+        title: input.title.trim(),
+        amount: Number(input.amount),
+        category: input.category,
+        date: input.date,
+        isRecurring: Boolean(input.isRecurring),
+      };
+
+      await expenseService.create(payload);
+
+      // Refresh month data after create
+      const [exp, byCat] = await Promise.all([
+        expenseService.index({ month }),
+        expenseService.byCategory({ month }),
+      ]);
+
+      setExpenses(Array.isArray(exp) ? exp : []);
+      setCategoryBreakdown(byCat?.categories ?? []);
+
+      // Reset form
+      setInput({
+        title: "",
+        amount: "",
+        category: "",
+        date: "",
+        isRecurring: false,
+      });
+    } catch (e2) {
+      setErr(e2?.message || "Failed to create expense");
+    }
+  };
 
 	return(
 		<main className="dashboard">
+			<div style={{ padding: "0 12px", display: "flex", gap: 12, alignItems: "center" }}>
+               <h3 style={{ margin: 0 }}>Dashboard</h3>
+               <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
+            </div>
+
         <section id="top">
             <div id="total-spent" className="card med">
 				<header>
 					<h6 className="title">Total Spent</h6>
 					<ImageIcn role="ph" size="12pt" />
 				</header>
-				<p className="money-block amount">${"1,256.35"}</p>
+				<p className="money-block amount">${money(totalSpent)}</p>
                 <div className="info-block">
 					<span className="compare-ratio">
 						<span className="arrow" style={{color:'inherit'}}>⬆</span>
@@ -62,23 +183,30 @@ export default function Dashboard() {
 					<h6 className="title">Budget Remaining</h6>
 					<ImageIcn role="ph" size="12pt" />
 				</header>
-				<p className="money-block amount">${budget.remaining}<span> / ${budget.monthlyLimit}</span></p>
+
+				<p className="money-block amount">
+					${money(budgetTotals.remaining)}
+					<span> / ${money(budgetTotals.totalLimit)}</span>
+				</p>
+
                 <div className="info-block">
 					<div className="progress-bar">
-						<div className="progress" style={{width:budget.percentage+'%'}}></div>
+						<div className="progress" style={{ width: `${Math.round(budgetTotals.usedPct)}%` }}></div>
 					</div>
-					<div className="detail" style={{float:'right'}}>{100-budget.percentage}% used</div>
-                </div>
-            </div>
+						<div className="detail" style={{float:'right'}}>
+							{Math.round(budgetTotals.usedPct)}% used
+                		</div>
+            		</div>
+				</div>
 
             <div id="monthly-recurring" className="card med">
 				<header>
 					<h6 className="title">Monthly Recurring</h6>
 					<ImageIcn role="ph" size="12pt" />
 				</header>
-				<p className="money-block amount">${"1,256.35"}</p>
+				<p className="money-block amount">${money(recurringTotal)}</p>
                 <div className="info-block">
-					<span className="detail">{"5"} active subscriptions</span>
+					<span className="detail">{recurringCount} active subscriptions</span>
                 </div>
             </div>
 		</section>
@@ -104,7 +232,7 @@ export default function Dashboard() {
 					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
 					<div className="recurring-block">
 						<label htmlFor="AE-recurring">Recurring</label>
-						<input id="AE-recurring" type="checkbox" name="recurring" onChange={handleChange} value={input.recurring} required />
+						<input id="AE-recurring" type="checkbox" name="recurring" onChange={handleChange} checked={input.isRecurring} />
 					</div>
 					<button type="submit">Add Expense </button>
 			   	</form>
@@ -144,13 +272,13 @@ export default function Dashboard() {
 						<span>Action</span>
 					</li>
                 {recentTransactions.map(transaction => 
-					<li key={transaction.id}>
+					<li key={transaction._id}>
 						<span>{transaction.title}</span>
 						<span>{transaction.category}</span>
 						<span>{transaction.amount}</span>
 						<span>
-							<Link to={'/transactions/'+transaction._id+'/edit'}><ImageIcn content="✎" /></Link>
-							<Link to={'/transactions/'+transaction._id+'/edit'}><ImageIcn content="🗑️" /></Link>
+							<Link to={`/expenses/${transaction._id}/edit`}><ImageIcn content="✎" /></Link>
+							<Link to={`/expenses/${transaction._id}/edit`}><ImageIcn content="🗑️" /></Link>
 						</span>
 					</li>
 				)}
@@ -164,11 +292,11 @@ export default function Dashboard() {
 				</header>
 				<ul id="recent-transactions">
                 {recurringExpenses.map(expense => 
-					<li key={expense.id} className="controls-li">
+					<li key={expense._id} className="controls-li">
 						<ImageIcn role="ph" size="24px" options="round" />
 						<div className="text-block">
 							<p>{expense.title}</p>
-							<span>{expense.period} • {expense.date._toOrdered()} of the month</span>
+							<span>{new Date(expense.date).getDate()} of the month</span>
 						</div>
 						<div className="right">
 							<span>${expense.amount}</span>
