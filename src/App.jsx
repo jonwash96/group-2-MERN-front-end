@@ -20,7 +20,6 @@ function App() {
 
   useEffect(() => {
     const signin = async () => {
-
       const signedInUser = await authService.signIn({
         username: import.meta.env.VITE_USERNAME,
         password: import.meta.env.VITE_PASSWORD
