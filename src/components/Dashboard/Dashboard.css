@@ -106,12 +106,97 @@ main.dashboard > section#middle {
 			overflow-y: scroll;
 
 			& label, button {margin-bottom:3px;}
+			
 			& .recurring-block {
 				margin-bottom: 1em;
 				display: flex;
 				justify-content: space-between;
 				align-items: baseline;
 			}
+			
+			/* NEW TOGGLE SWITCH STYLING */
+			& .recurring-toggle-block {
+				margin: 1.5em 0;
+				padding: 1em;
+				background-color: var(--bgf1);
+				border-radius: 8px;
+				border: 1px solid var(--bgf2);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				transition: all 0.3s ease;
+			}
+
+			& .recurring-label-group {
+				display: flex;
+				flex-direction: column;
+				gap: 0.3em;
+			}
+
+			& .recurring-label-group label {
+				font-weight: 600;
+				font-size: 1em;
+				color: var(--secondary);
+				margin: 0;
+			}
+
+			& .recurring-subtext {
+				font-size: 0.85em;
+				color: var(--bgf3);
+				font-style: italic;
+			}
+
+			/* Toggle Switch Styles */
+			& .toggle-switch {
+				position: relative;
+				display: inline-block;
+				width: 52px;
+				height: 28px;
+				margin: 0;
+			}
+
+			& .toggle-switch input {
+				opacity: 0;
+				width: 0;
+				height: 0;
+			}
+
+			& .toggle-slider {
+				position: absolute;
+				cursor: pointer;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: #ccc;
+				transition: 0.4s;
+				border-radius: 28px;
+			}
+
+			& .toggle-slider:before {
+				position: absolute;
+				content: "";
+				height: 20px;
+				width: 20px;
+				left: 4px;
+				bottom: 4px;
+				background-color: white;
+				transition: 0.4s;
+				border-radius: 50%;
+			}
+
+			& .toggle-switch input:checked + .toggle-slider {
+				background: linear-gradient(to right, var(--dblue), var(--lblue));
+			}
+
+			& .toggle-switch input:focus + .toggle-slider {
+				box-shadow: 0 0 1px var(--dblue);
+			}
+
+			& .toggle-switch input:checked + .toggle-slider:before {
+				transform: translateX(24px);
+			}
+			
 			& input, button, select {
 				padding:1% 10px;
 				border-radius:3px;

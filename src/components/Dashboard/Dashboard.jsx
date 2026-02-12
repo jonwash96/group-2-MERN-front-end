@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useContext } from 'react'
 import { styled } from 'styled-components'
 import { Link, useNavigate } from 'react-router'
@@ -36,6 +37,16 @@ export default function Dashboard() {
 	}
 
     const handleChange = (e) => {setInput({ ...input, [e.target.name]:e.target.value })};
+	const handleToggleRecurring = () => {setInput({ ...input, recurring: !input.recurring })};
+	const handleToggleExpenseStatus = (expenseId) => {
+		setRecurringExpenses(prev => 
+			prev.map(expense => 
+				expense._id === expenseId 
+					? { ...expense, status: !expense.status }
+					: expense
+			)
+		);
+	};
     const handleSearch = () => {console.log("@Headbar > handleSearch", input.search)};
 	const handleCreateExpense = () => {};
 
@@ -102,10 +113,26 @@ export default function Dashboard() {
 					</select>
 					<label htmlFor="AE-date">Date</label>
 					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
-					<div className="recurring-block">
-						<label htmlFor="AE-recurring">Recurring</label>
-						<input id="AE-recurring" type="checkbox" name="recurring" onChange={handleChange} value={input.recurring} required />
+					
+					<div className="recurring-toggle-block">
+						<div className="recurring-label-group">
+							<label htmlFor="AE-recurring">Monthly Recurring Payment</label>
+							<span className="recurring-subtext">
+								{input.recurring ? 'This expense will repeat monthly' : 'One-time payment'}
+							</span>
+						</div>
+						<label className="toggle-switch">
+							<input 
+								id="AE-recurring"
+								type="checkbox" 
+								name="recurring" 
+								checked={input.recurring}
+								onChange={handleToggleRecurring}
+							/>
+							<span className="toggle-slider"></span>
+						</label>
 					</div>
+
 					<button type="submit">Add Expense </button>
 			   	</form>
             </div>
@@ -164,7 +191,7 @@ export default function Dashboard() {
 				</header>
 				<ul id="recent-transactions">
                 {recurringExpenses.map(expense => 
-					<li key={expense.id} className="controls-li">
+					<li key={expense._id} className="controls-li">
 						<ImageIcn role="ph" size="24px" options="round" />
 						<div className="text-block">
 							<p>{expense.title}</p>
@@ -172,9 +199,14 @@ export default function Dashboard() {
 						</div>
 						<div className="right">
 							<span>${expense.amount}</span>
-							<div className="toggle">
-								<input type="checkbox" onChange={handleChange} value={expense.status} />
-							</div>
+							<label className="toggle-switch-small">
+								<input 
+									type="checkbox" 
+									checked={expense.status}
+									onChange={() => handleToggleExpenseStatus(expense._id)} 
+								/>
+								<span className="toggle-slider-small"></span>
+							</label>
 						</div>
 					</li>
 				)}
