@@ -111,6 +111,53 @@ export default function Dashboard() {
   // Recent transactions list (use real expenses)
   const recentTransactions = useMemo(() => expenses.slice(0, 6), [expenses]);
 
+	// pie starts here
+	const calculateSpendingByCategory = () => {
+		const categoryTotals = {};
+		
+		data.expenseCategories.forEach(([category]) => {
+			categoryTotals[category] = 0;
+		});
+		
+		expenses.forEach(expense => {
+			if (expense.category && categoryTotals.hasOwnProperty(expense.category)) {
+				categoryTotals[expense.category] += Number(expense.amount) || 0;
+			}
+		});
+		
+		const totalSpending = Object.values(categoryTotals).reduce((sum, val) => sum + val, 0);
+		
+		// Convert to percentages of pie slices
+		const pieData = data.expenseCategories.map(([category, color]) => {
+			const amount = categoryTotals[category];
+			const percentage = totalSpending > 0 ? (amount / totalSpending) * 100 : 0;
+			return { category, color, percentage, amount };
+		});
+		
+		return pieData;
+	};
+
+	const generatePieGradient = () => {
+		const pieData = calculateSpendingByCategory();
+		let currentAngle = 0;
+		const gradientStops = [];
+		
+		pieData.forEach((slice) => {
+			if (slice.percentage > 0) {
+				const startAngle = currentAngle;
+				currentAngle += (slice.percentage / 100) * 360;
+				const endAngle = currentAngle;
+				
+				// this is how it knows where the color stops are for each slice
+				gradientStops.push(`${slice.color} ${startAngle}deg ${endAngle}deg`);
+			}
+		});
+		
+		return gradientStops.length > 0 
+			? `conic-gradient(${gradientStops.join(', ')})` 
+			: 'conic-gradient(#ccc 0deg 360deg)';
+	};
+// pie ends here this gave me a headache ngl i wouldnt wish this on my worst enemy
     const handleChange = (e) => {
     const { name, type, value, checked } = e.target;
     setInput((prev) => ({
@@ -166,15 +213,10 @@ if (err) {
   );
 }
 
-	const handleToggleRecurring = () => {setInput({ ...input, recurring: !input.recurring })};
+	const handleToggleRecurring = () => {setInput({ ...input, isRecurring: !input.isRecurring })};
 	const handleToggleExpenseStatus = (expenseId) => {
-		setRecurringExpenses(prev => 
-			prev.map(expense => 
-				expense._id === expenseId 
-					? { ...expense, status: !expense.status }
-					: expense
-			)
-		);
+		// This would need backend API to toggle status
+		console.log("Toggle expense status:", expenseId);
 	};
     const handleSearch = () => {console.log("@Headbar > handleSearch", input.search)};
 
@@ -258,15 +300,15 @@ if (err) {
 						<div className="recurring-label-group">
 							<label htmlFor="AE-recurring">Monthly Recurring Payment</label>
 							<span className="recurring-subtext">
-								{input.recurring ? 'This expense will repeat monthly' : 'One-time payment'}
+								{input.isRecurring ? 'This expense will repeat monthly' : 'One-time payment'}
 							</span>
 						</div>
 						<label className="toggle-switch">
 							<input 
 								id="AE-recurring"
 								type="checkbox" 
-								name="recurring" 
-								checked={input.recurring}
+								name="isRecurring" 
+								checked={input.isRecurring}
 								onChange={handleToggleRecurring}
 							/>
 							<span className="toggle-slider"></span>
@@ -283,15 +325,22 @@ if (err) {
 					<Link to="/expenses/report">View Report</Link>
 				</header>
 				<figcaption>
-					{data.expenseCategories.map(([key,col]) =>
-						<div>
-							<div key={"fig-cap-"+key} style={{'--col':col}}>{key}</div>
-						</div>
+					{calculateSpendingByCategory().map(({category, color, percentage, amount}) => 
+						percentage > 0 && (
+							<div key={"fig-cap-wrapper-"+category}>
+								<div style={{'--col':color}}>
+									{category} (${money(amount)})
+								</div>
+							</div>
+						)
 					)}
 				</figcaption>
 				<figure>
 					<div className="pie-wrapper">
-						<div className="pie-slices"></div>
+						<div 
+							className="pie-slices" 
+							style={{backgroundImage: generatePieGradient()}}
+						></div>
 					</div>
 				</figure>
             </div>
@@ -338,11 +387,11 @@ if (err) {
 							<span>{new Date(expense.date).getDate()} of the month</span>
 						</div>
 						<div className="right">
-							<span>${expense.amount}</span>
+							<span>${money(expense.amount)}</span>
 							<label className="toggle-switch-small">
 								<input 
 									type="checkbox" 
-									checked={expense.status}
+									checked={expense.isRecurring}
 									onChange={() => handleToggleExpenseStatus(expense._id)} 
 								/>
 								<span className="toggle-slider-small"></span>
