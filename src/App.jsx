@@ -9,6 +9,8 @@ import * as authService from './services/authService'
 import * as userService from './services/userService'
 import { ImageIcn, errToast } from './utils/gizmos'
 import './utils/gizmos/bancroft-proto'
+import ExpensesPage from './pages/Expensespage.jsx';
+
 
 function App() {
   const { user, setUser } = useContext(UserContext);
@@ -21,8 +23,8 @@ function App() {
   useEffect(() => {
     const signin = async () => {
       const signedInUser = await authService.signIn({
-        username: 'Skywalker',
-        password: 'squid'
+        username: 'ricky',
+        password: '12345'
       });
       console.log("@signin", signedInUser);
       setUser(signedInUser);

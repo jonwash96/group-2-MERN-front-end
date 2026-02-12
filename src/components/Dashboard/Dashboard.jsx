@@ -20,7 +20,7 @@ export default function Dashboard() {
         <header>
             <div className="left">
                 <h1><span className="thin">Hello,</span> {user.displayName}</h1>
-                <p>Explore Your Recipes, Favourite Ingredients, and More.</p>
+                <p>Explore Your Recipes, Favourite Ingredients, and .</p>
             </div>
             <form className="btn-block" action="/recipes/new" method="GET">
                 <button className="action-btn">➕ New Recipe</button>

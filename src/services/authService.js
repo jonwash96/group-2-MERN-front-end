@@ -1,4 +1,4 @@
-const API_URL = (import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3000")
+const API_URL = (import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3009")
 const BASE_URL = `${API_URL}/auth`;
 
 export async function signUp(formData) {
