@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext, useMemo } from 'react'
+import { styled } from 'styled-components'
 import { Link, useNavigate } from 'react-router'
 import '../../utils/gizmos/bancroft-proto'
 import { ImageIcn } from '../../utils/gizmos'
@@ -165,6 +166,17 @@ if (err) {
   );
 }
 
+	const handleToggleRecurring = () => {setInput({ ...input, recurring: !input.recurring })};
+	const handleToggleExpenseStatus = (expenseId) => {
+		setRecurringExpenses(prev => 
+			prev.map(expense => 
+				expense._id === expenseId 
+					? { ...expense, status: !expense.status }
+					: expense
+			)
+		);
+	};
+    const handleSearch = () => {console.log("@Headbar > handleSearch", input.search)};
 
 	return(
 		<main className="dashboard">
@@ -241,11 +253,27 @@ if (err) {
 					</select>
 					<label htmlFor="AE-date">Date</label>
 					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
-					<div className="recurring-block">
-						<label htmlFor="AE-recurring">Recurring</label>
-						<input id="AE-recurring" type="checkbox" name="isRecurring" onChange={handleChange} checked={input.isRecurring} />
+					
+					<div className="recurring-toggle-block">
+						<div className="recurring-label-group">
+							<label htmlFor="AE-recurring">Monthly Recurring Payment</label>
+							<span className="recurring-subtext">
+								{input.recurring ? 'This expense will repeat monthly' : 'One-time payment'}
+							</span>
+						</div>
+						<label className="toggle-switch">
+							<input 
+								id="AE-recurring"
+								type="checkbox" 
+								name="recurring" 
+								checked={input.recurring}
+								onChange={handleToggleRecurring}
+							/>
+							<span className="toggle-slider"></span>
+						</label>
 					</div>
-					<button type="submit">Add Expense</button>
+
+					<button type="submit">Add Expense </button>
 			   	</form>
             </div>
 
@@ -310,10 +338,15 @@ if (err) {
 							<span>{new Date(expense.date).getDate()} of the month</span>
 						</div>
 						<div className="right">
-							<span>${money(expense.amount)}</span>
-							<div className="toggle">
-								<input type="checkbox" checked={Boolean(expense.isRecurring || expense.recurringExpense)} readOnly />
-							</div>
+							<span>${expense.amount}</span>
+							<label className="toggle-switch-small">
+								<input 
+									type="checkbox" 
+									checked={expense.status}
+									onChange={() => handleToggleExpenseStatus(expense._id)} 
+								/>
+								<span className="toggle-slider-small"></span>
+							</label>
 						</div>
 					</li>
 				)}

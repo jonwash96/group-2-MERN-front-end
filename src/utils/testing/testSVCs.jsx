@@ -19,8 +19,8 @@ export default function TestSVCs() {
     useEffect(() => {
         const signin = async () => {
             const signedInUser = await authService.signIn({
-                username: 'Skywalker',
-                password: 'squid'
+                username: 'ricky',
+                password: '12345'
             });
             console.log("@signin", signedInUser);
             setUser(signedInUser);

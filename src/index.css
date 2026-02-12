@@ -5,11 +5,14 @@
   box-sizing: border-box;
 }
 
+body {margin:0;}
+
 @media (prefers-color-scheme: light) {
   * {
     --bg: #fff;
     --bgf1: #ddd;
     --bgf2: #bbb;
+    --bgf2: #888;
     --bgb1: #dff0f0;
     --bgb2: #dfeaea;
     --primary: #fff;
@@ -27,8 +30,11 @@
     --bgb1: #1a1a1a;
     --bgb2: #0f0f0f;
     --primary: #fff;
+    --primary-op: #000;
     --secondary: #bbb;
+    --secondary-op: #444;
     --tertiary: #888;
+    --tertiary-op: #777;
   }
 }
 
@@ -36,6 +42,7 @@ ul {list-style:none;padding:0;}
 
 /* BASIC COLORS */
 * {
+  --brand-key: #0b0;
   --cwhite: #cded;
   --lsteelblue: #406c8f;
   --steelblue: #003c5f;

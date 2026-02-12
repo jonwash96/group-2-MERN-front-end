@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import './ExpenseForm.css';
 
 const CATEGORIES = [
@@ -21,7 +21,7 @@ const PAYMENT_METHODS = [
   'Other'
 ];
 
-const ExpenseForm = ({ expense = null, onSuccess, onCancel }) => {
+export default function ExpenseForm({ expense = null, onSuccess, onCancel }) {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -56,7 +56,7 @@ const ExpenseForm = ({ expense = null, onSuccess, onCancel }) => {
       ...prev,
       [name]: value
     }));
-    if (errors[name]) {
+    if (errors[name]) { //! Is this how we want this to work? I think this would clear the input if there's an error before submit. I'd think we'd just want to change the border color and leave what's there to be edited
       setErrors(prev => ({
         ...prev,
         [name]: ''
@@ -279,5 +279,3 @@ const ExpenseForm = ({ expense = null, onSuccess, onCancel }) => {
     </form>
   );
 };
-
-export default ExpenseForm;

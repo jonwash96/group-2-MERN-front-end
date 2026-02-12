@@ -62,7 +62,7 @@ export default function NewExpensePage() {
         </div>
         
         <div>
-          <label>Category:</label>
+          <label>Cateory:</label>
           <select value={category} onChange={(e) => setCategory(e.target.value)}>
             {categories.map(cat => (
               <option key={cat} value={cat}>{cat}</option>

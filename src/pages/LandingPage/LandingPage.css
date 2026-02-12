@@ -1,0 +1,160 @@
+nav.landing-page {
+	height:60px;
+	position:sticky;
+	top:0;
+	width:100%;
+	padding-top: 10px;
+	background-color: var(--bgb2);
+	
+	& div.wrapper {
+		margin:0 auto;
+		max-width:1080px;
+		min-width:800px;
+		display:flex;
+		justify-content: space-between;
+		align-items: center;
+
+		& p {
+			font-size: 1.5em; 
+			font-weight: bold;
+			color: var(--brand-key);
+			margin: 0;
+			margin-right: 1em;
+		}
+		& > div {
+			display:flex;
+			align-items: center;
+			gap:1em;
+		}
+	}
+}
+
+button.primary, button.secondary, button.tertiary {
+	height:40px;
+	padding:0 18px;
+	border-radius: 25px;
+	border:none;
+	background-color:transparent;
+	cursor:pointer;
+}
+
+button.primary {background-color: var(--primary);color:var(--primary-op);}
+button.secondary {background-color: transparent;}
+button.tertiary {border:1px solid var(--tertiary);}
+
+main#landing-page {
+	margin:0 auto;
+	max-width:1080px;
+	min-width:800px;
+	& section{margin-top: 50px};
+}
+
+section#hero {
+	& div.hero-wrapper {
+		background-color: var(--bgf1);
+		border-radius: 36px;
+		display:grid;
+		grid-template: 100% / 1fr 1fr;
+		padding:2em;
+		height:45vh;
+
+		& header {
+			display: flex;
+			flex-direction: column;
+			height:100%;
+			justify-content: center;
+
+			& button {
+				width:200px;
+				margin-top: 25px;
+			}
+		}
+		& div.image-wrapper {
+			display:flex;
+			justify-content: center;
+			align-items: end;
+		}
+	}
+}
+
+section#join {
+	width:100%;
+	overflow-x: hidden;
+
+	& div.slider-wrapper {
+		width:100%;
+		overflow-x: scroll;
+
+		& div.slider-inner {
+			display:flex;
+			gap:1em;
+			width:200%;
+			overflow-x: scroll;
+		}
+	}
+}
+
+div#landing-page-wrapper {
+	& section.left {
+		border-radius: 36px;
+		display:flex;
+		gap:2em;
+		align-items: center;
+		padding:3em;
+		height:45vh;
+		text-align: right;
+
+		& div.text-block {
+			display: flex;
+			flex-direction: column;
+			height:100%;
+			justify-content: center;
+			align-items: end;
+
+			& button {
+				width:200px;
+				margin-top: 25px;
+			}
+		}
+
+		& div.img {
+			display:flex;
+			justify-content: center;
+			align-items: end;
+		}
+	}
+	& section.right {
+		border-radius: 36px;
+		display:flex;
+		flex-direction: row-reverse;
+		gap:2em;
+		align-items: center;
+		padding:3em;
+		height:45vh;
+
+		& div.text-block {
+			display: flex;
+			flex-direction: column;
+			height:100%;
+			justify-content: center;
+
+			& button {
+				width:200px;
+				margin-top: 25px;
+			}
+		}
+
+		& div.img {
+			display:flex;
+			justify-content: center;
+			align-items: end;
+		}
+	}
+}
+
+footer {
+	text-align: center;
+	background-color: black;
+
+	padding:4em 0;
+}

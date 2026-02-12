@@ -3,6 +3,7 @@ import './App.css'
 import { UserContext } from "./contexts/UserContext";
 import Headbar from './components/Headbar/Headbar.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
+import LandingPage from './pages/LandingPage/LandingPage.jsx'
 import * as expenseService from './services/expenseService'
 import * as authService from './services/authService'
 import './utils/gizmos/bancroft-proto'
@@ -24,6 +25,7 @@ function App() {
   const [categoryBreakdown, setCategoryBreakdown] = useState([]) // from /expenses-by category
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [loggedInUserTest, setLoggedInUserTest] = useState(false);
 
   useEffect(() => {
     const signin = async () => {
@@ -35,7 +37,7 @@ function App() {
       setUser(signedInUser);
       setUid(signedInUser._id);
     }; signin();
-  }, [])
+  }, [setUser])
 
   useEffect(()=>{
     const loadDashboardData = async () => {
@@ -62,24 +64,20 @@ function App() {
     loadDashboardData();
   }, [user?._id, month]);
 
-  const monthTotal = useMemo(
-    () => expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
-    [expenses]
-  );
+  // const monthTotal = useMemo(
+  //   () => expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
+  //   [expenses]
+  // );
+  const simulateSignInOut = (bool) => setLoggedInUserTest(bool);
 
   if (!user?.username) return <p>Loading. . .</p>;
   return (
     <>
-      <Headbar />
-      <Dashboard
-      month={month}
-      setMonth={setMonth}
-      loading={loading}
-      error={error}
-      expenses={expenses}
-      categoryBreakdown={categoryBreakdown}
-      monthTotal={monthTotal}
-      />
+      {!loggedInUserTest && <LandingPage simulateSignInOut={simulateSignInOut} />}
+      {loggedInUserTest && <>
+        <Headbar simulateSignInOut={simulateSignInOut} />
+        <Dashboard />
+      </>}
     </>
   )
 }
