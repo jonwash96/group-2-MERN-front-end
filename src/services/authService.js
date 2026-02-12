@@ -13,10 +13,13 @@ export async function signUp(formData) {
 		if (data.err) throw new Error(data.err);
 		if (!data.token) throw new Error("Invalid response from the server. Token not found.");
 		
-		localStorage.setItem('token', token);
-		return JSON.parse(atob(token.split(".")[1])).payload;
+		// fix: use data.token (token wasn't defined before)
+		localStorage.setItem('token', data.token);
+
+		return data.user; // kept it consistent with signIn by returning the user object
 	} catch (err) {
-		throw new Error(err);
+		// err might already be an Error
+		throw new Error(err?.message || String(err));
 	}
 };
 
@@ -39,4 +42,9 @@ export async function signIn(formData) {
 	} catch (err) {
 		throw new Error(err);
 	}
+};
+
+// added a signOut helper
+export function signOut() {
+	localStorage.removeItem("token");
 };

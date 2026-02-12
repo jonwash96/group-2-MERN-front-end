@@ -26,6 +26,7 @@ export async function index({month, start, end} = {}) {
     }
 }
 
+// get category breakdown for charts/budget joining
 export async function byCategory({month, start, end} = {}) {
     try {
         const qs = new URLSearchParams();
