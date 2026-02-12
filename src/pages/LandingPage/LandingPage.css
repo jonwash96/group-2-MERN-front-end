@@ -35,6 +35,7 @@ button.primary, button.secondary, button.tertiary {
 	border-radius: 25px;
 	border:none;
 	background-color:transparent;
+	cursor:pointer;
 }
 
 button.primary {background-color: var(--primary);color:var(--primary-op);}

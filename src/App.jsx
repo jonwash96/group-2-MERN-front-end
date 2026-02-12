@@ -19,6 +19,7 @@ function App() {
   const [notifications, setNotifications] = useState();
   const [activity, setActivity] = useState();
   const [uid, setUid] = useState();
+  const [loggedInUserTest, setLoggedInUserTest] = useState(false);
 
   useEffect(() => {
     const signin = async () => {
@@ -33,12 +34,16 @@ function App() {
     }; signin();
   }, [])
 
+  const simulateSignInOut = (bool) => setLoggedInUserTest(bool);
+
   if (!user?.username) return <p>Loading. . .</p>;
   return (
     <>
-      <LandingPage />
-      {/* <Headbar />
-      <Dashboard /> */}
+      {!loggedInUserTest && <LandingPage simulateSignInOut={simulateSignInOut} />}
+      {loggedInUserTest && <>
+        <Headbar simulateSignInOut={simulateSignInOut} />
+        <Dashboard />
+      </>}
     </>
   )
 }

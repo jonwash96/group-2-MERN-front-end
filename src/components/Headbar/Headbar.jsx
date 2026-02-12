@@ -8,7 +8,7 @@ import { UserContext } from "../../contexts/UserContext";
 import './Headbar.css'
 import '../../utils/gizmos/bancroft-proto'
 
-export default function Headbar() {
+export default function Headbar({ simulateSignInOut }) {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [input, setInput] = useState({});
@@ -53,7 +53,8 @@ export default function Headbar() {
                         <span> ▾</span>
                         <ul>
                             <Link to="/profile"><li>Profile</li></Link>
-                            <Link to="/auth/sign-out"><li>Sign Out</li></Link>
+                            {/* <Link to="/auth/sign-out"><li>Sign Out</li></Link> */}
+                            <li onClick={()=>simulateSignInOut(false)}>Sign Out</li>
                         </ul>
                     </div>
 

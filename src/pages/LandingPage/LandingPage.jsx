@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import './LandingPage.css'
 
-export default function LandingPage(params) {
+export default function LandingPage({ simulateSignInOut }) {
 	const [joinImages, setJoinImages] = useState([
 		{name:'image', description:'', url:'/svg/noimg.svg'},
 		{name:'image', description:'', url:'/svg/noimg.svg'},
@@ -21,8 +21,8 @@ export default function LandingPage(params) {
 					<span>Info</span>
 				</div>
 				<div className="right">
-					<button type="button" className="secondary">Log In</button>
-					<button type="button" className="primary">Sign Up</button>
+					<button type="button" onClick={()=>simulateSignInOut(true)} className="secondary">Log In</button>
+					<button type="button" onClick={()=>simulateSignInOut(true)} className="primary">Sign Up</button>
 				</div>
 			</div>
 		</nav>
