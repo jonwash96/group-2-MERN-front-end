@@ -4,12 +4,18 @@ import { createContext, useState } from "react";
 const UserContext = createContext()
 
 const getUserFromToken = () => {
-    // grab the token from local storage
-    const token = localStorage.getItem('token')
-    // if no token just return null
-    if(!token) return null
-    // If we have a token lets grab the payload
-    return JSON.parse(atob(token.split('.')[1])).payload
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+
+    try {
+        const parsed = JSON.parse(atob(token.split(".")[1]));
+        // Support both legacy payload-wrapped tokens and plain JWT payloads.
+        return parsed?.payload ?? parsed ?? null;
+    } catch (error) {
+        console.error("@UserContext > getUserFromToken()", error);
+        localStorage.removeItem("token");
+        return null;
+    }
 }
 
 // set up a provider component to provide or context to its children

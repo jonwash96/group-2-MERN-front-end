@@ -26,7 +26,7 @@ export function ImageIcn(props) {
 
 	switch (props.role) {
 		case 'profile-photo': {
-			src = user?.photo.url || '/default-profile-photo.jpg';
+			src = user?.photo?.url || '/default-profile-photo.jpg';
 			istyle = {...istyle, borderRadius:'50%', margin: '0 1%', aspectRatio: '1/1'};
 			dstyle = {...dstyle, display:'inline'};
 		}; break;

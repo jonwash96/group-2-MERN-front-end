@@ -94,13 +94,13 @@ function NotificationsList({props}) {
     return(
         <ul>
             <h6>Notifications</h6>
-            {user.notifications.map(notif => 
+            {(user.notifications || []).map(notif => 
                 <li key={notif._id} onClick={()=>handleSelect(notif._id)}>
                     <header>
                         <h5>{notif.title}</h5>
-                        <span>{notif.created_at._epochTo('recent')}</span>
+                        <span>{notif.created_at?._epochTo('recent')}</span>
                     </header>
-                    <span title={notif.description}>{notif.description._ellipses(120)}</span>
+                    <span title={notif.description || ""}>{(notif.description || "")._ellipses(120)}</span>
                 </li>
             )}
         </ul>
