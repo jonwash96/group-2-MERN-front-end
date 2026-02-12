@@ -58,7 +58,7 @@ export default function Headbar() {
                     </div>
 
                     <div id="notification-menu" className="flyout-menu">
-                        <ImageIcn role="notifications" data={user.notifications.length} size="25px" />
+                        <ImageIcn role="notifications" data={user.notifications?.length} size="25px" />
                         <ul> {/* ⏬ Done this way so that they can transition between show/hide */}
                             <NotificationsList 
                                 className={selectedNotif ? "show-notif" : "show-notif-list"} 

@@ -20,9 +20,9 @@ function money(n) {
 }
 
 export default function Dashboard() {
-	const navigate = useNavigate();
-    const { user } = useContext(UserContext);
-	const [month, setMonth] = useState(getCurrentMonthValue())
+	// const navigate = useNavigate();
+    // const { user } = useContext(UserContext);
+	const [month, setMonth] = useState(() => getCurrentMonthValue());
     const [input, setInput] = useState({
 		title: "",
 		amount: "",
@@ -155,6 +155,17 @@ export default function Dashboard() {
     }
   };
 
+  if (loading) return <p style={{ padding: 16 }}>Loading dashboard…</p>;
+
+if (err) {
+  return (
+    <div style={{ padding: 16 }}>
+      <p><strong>Error:</strong> {err}</p>
+    </div>
+  );
+}
+
+
 	return(
 		<main className="dashboard">
 			<div style={{ padding: "0 12px", display: "flex", gap: 12, alignItems: "center" }}>
@@ -174,7 +185,7 @@ export default function Dashboard() {
 						<span className="arrow" style={{color:'inherit'}}>⬆</span>
 						<span className="Amount" style={{color:'inherit'}}>{"12"}%</span>
 					</span>
-					<span className="detail"> vs last month</span>
+					<span className="detail">This month</span>
                 </div>
             </div>
 
@@ -224,17 +235,17 @@ export default function Dashboard() {
 					<label htmlFor="AE-category">Category</label>
 					<select id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required>
 						<option value="">--Select a Category</option>
-						{data.expenseCategories.map(category =>
-							<option value={category[0]}>{category[0]}</option>
+						{data.expenseCategories.map(([name]) =>
+							<option key={name} value={name}>{name}</option>
 						)}
 					</select>
 					<label htmlFor="AE-date">Date</label>
 					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
 					<div className="recurring-block">
 						<label htmlFor="AE-recurring">Recurring</label>
-						<input id="AE-recurring" type="checkbox" name="recurring" onChange={handleChange} checked={input.isRecurring} />
+						<input id="AE-recurring" type="checkbox" name="isRecurring" onChange={handleChange} checked={input.isRecurring} />
 					</div>
-					<button type="submit">Add Expense </button>
+					<button type="submit">Add Expense</button>
 			   	</form>
             </div>
 
@@ -275,7 +286,7 @@ export default function Dashboard() {
 					<li key={transaction._id}>
 						<span>{transaction.title}</span>
 						<span>{transaction.category}</span>
-						<span>{transaction.amount}</span>
+						<span>${money(transaction.amount)}</span>
 						<span>
 							<Link to={`/expenses/${transaction._id}/edit`}><ImageIcn content="✎" /></Link>
 							<Link to={`/expenses/${transaction._id}/edit`}><ImageIcn content="🗑️" /></Link>
@@ -299,9 +310,9 @@ export default function Dashboard() {
 							<span>{new Date(expense.date).getDate()} of the month</span>
 						</div>
 						<div className="right">
-							<span>${expense.amount}</span>
+							<span>${money(expense.amount)}</span>
 							<div className="toggle">
-								<input type="checkbox" onChange={handleChange} value={expense.status} />
+								<input type="checkbox" checked={Boolean(expense.isRecurring || expense.recurringExpense)} readOnly />
 							</div>
 						</div>
 					</li>

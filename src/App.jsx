@@ -1,15 +1,11 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useMemo } from 'react'
 import './App.css'
-import TestSVCs from './utils/testing/testSVCs'
 import { UserContext } from "./contexts/UserContext";
 import Headbar from './components/Headbar/Headbar.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
 import * as expenseService from './services/expenseService'
 import * as authService from './services/authService'
-import * as userService from './services/userService'
-import { ImageIcn, errToast } from './utils/gizmos'
 import './utils/gizmos/bancroft-proto'
-import { UNSAFE_ErrorResponseImpl } from 'react-router';
 
 function getCurrentMonthValue(date = new Date()) {
   const y = date.getFullYear();
@@ -20,11 +16,11 @@ function getCurrentMonthValue(date = new Date()) {
 function App() {
   const { user, setUser } = useContext(UserContext);
   const [expenses, setExpenses] = useState([]);
-  const [receipts, setReceipts] = useState();
-  const [notifications, setNotifications] = useState();
-  const [activity, setActivity] = useState();
+  // const [receipts, setReceipts] = useState();
+  // const [notifications, setNotifications] = useState();
+  // const [activity, setActivity] = useState();
   const [uid, setUid] = useState();
-  const [month, setMonth] = useState(getCurrentMonthValue)
+  const [month, setMonth] = useState(() => getCurrentMonthValue())
   const [categoryBreakdown, setCategoryBreakdown] = useState([]) // from /expenses-by category
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -44,15 +40,15 @@ function App() {
 
   useEffect(()=>{
     const loadDashboardData = async () => {
-      if (!user?.id) return;
+      if (!user?._id) return;
 
       setLoading(true);
       setError("");
 
       try {
         const [exp, byCat] = await Promise.all([
-          expenseService.index({month}),
-          expenseService.byCategory((month)),
+          expenseService.index({ month }),
+          expenseService.byCategory({ month }),
         ]);
 
         setExpenses(exp);
@@ -65,7 +61,7 @@ function App() {
     };
 
     loadDashboardData();
-  }, [user?.id, month]);
+  }, [user?._id, month]);
 
   const monthTotal = useMemo(
     () => expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
