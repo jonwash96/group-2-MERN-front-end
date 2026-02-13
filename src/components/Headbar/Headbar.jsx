@@ -65,7 +65,7 @@ const month = 2;
                             <li><Link to="/profile">Profile</Link></li>
                             <li><Link to="/expenses">Expenses</Link></li>
                             <li><Link to="/budgets">Budgets</Link></li>
-                            <li><Link to="/auth/sign-out">Sign Out</Link></li>
+                            <li><Link to="/sign-out">Sign Out</Link></li>
                         </ul>
                     </div>
 

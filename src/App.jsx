@@ -92,7 +92,7 @@ function App() {
         {/* Public */}
         <Route
           path="/"
-          element={<LandingPage />}
+          element={<LandingPage isAuthed={isAuthed} />}
         />
 
         <Route
@@ -106,6 +106,11 @@ function App() {
         />
 
         {/* Protected */}
+        <Route
+          path="/sign-out"
+          element={<LandingPage signout={true} />}
+        />
+
         <Route
           path="/dashboard"
           element={
