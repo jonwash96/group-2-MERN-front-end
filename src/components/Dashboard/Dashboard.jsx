@@ -302,7 +302,6 @@ if (err) {
 		// This would need backend API to toggle status
 		console.log("Toggle expense status:", expenseId);
 	};
-    const handleSearch = () => {console.log("@Headbar > handleSearch", input.search)};
 
 	return(
 		<main className="dashboard">
@@ -315,15 +314,15 @@ if (err) {
             <div id="total-spent" className="card med">
 				<header>
 					<h6 className="title">Total Spent</h6>
-					<ImageIcn role="ph" size="12pt" />
+					<ImageIcn content="💳" size="12pt" />
 				</header>
 				<p className="money-block amount">${money(totalSpent)}</p>
                 <div className="info-block">
 					<span className="compare-ratio">
 						<span className="arrow" style={{color:'inherit'}}>⬆</span>
-						<span className="Amount" style={{color:'inherit'}}>{"12"}%</span>
+						<span className="Amount" style={{color:'inherit'}}>{"100"}%</span>
 					</span>
-					<span className="detail">This month</span>
+					<span className="detail"> This month</span>
                 </div>
             </div>
 
@@ -332,7 +331,7 @@ if (err) {
 					<h6 className="title">Budget Remaining</h6>
 					<span style={{ display: "flex", alignItems: "center", gap: 8 }}>
 						<Link to="/budgets">Manage</Link>
-						<ImageIcn role="ph" size="12pt" />
+						<ImageIcn content="🧮" size="12pt" />
 					</span>
 				</header>
 
@@ -351,7 +350,7 @@ if (err) {
             		</div>
 
 				{budgetSnapshots.length > 0 ? (
-					<div className="budget-mini-list">
+					<div className="budget-mini-list hide">
 						{budgetSnapshots.slice(0, 3).map((budget) => (
 							<div
 								key={budget._id || `${budget.name}-${budget.category}`}
@@ -380,7 +379,7 @@ if (err) {
             <div id="monthly-recurring" className="card med">
 				<header>
 					<h6 className="title">Monthly Recurring</h6>
-					<ImageIcn role="ph" size="12pt" />
+					<ImageIcn content="🔄" size="12pt" />
 				</header>
 				<p className="money-block amount">${money(recurringTotal)}</p>
                 <div className="info-block">

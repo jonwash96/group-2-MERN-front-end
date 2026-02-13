@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import * as budgetsService from "../services/budgetsService";
+import * as budgetsService from "../../services/budgetsService";
+import './BudgetForm.css'
 
 const CATEGORIES = [
   "Housing",
@@ -105,7 +106,7 @@ export default function BudgetForm({ budget = null, onSuccess, onCancel }) {
   };
 
   return (
-    <form className="budget-form" onSubmit={handleSubmit}>
+    <form id="budget-form" onSubmit={handleSubmit}>
       <h2 className="form-title">
         {budget ? "Edit Budget" : "Create New Budget"}
       </h2>
@@ -186,7 +187,7 @@ export default function BudgetForm({ budget = null, onSuccess, onCancel }) {
       <div className="form-actions">
         <button
           type="submit"
-          className="btn btn-primary"
+          className="btn primary"
           disabled={isSubmitting}
         >
           {isSubmitting
@@ -201,7 +202,7 @@ export default function BudgetForm({ budget = null, onSuccess, onCancel }) {
         {onCancel && (
           <button
             type="button"
-            className="btn btn-secondary"
+            className="btn secondary"
             onClick={onCancel}
             disabled={isSubmitting}
           >

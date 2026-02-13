@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import BudgetForm from "./BudgetForm";
+import BudgetForm from "./BudgetForm/BudgetForm";
 import * as budgetsService from "../services/budgetsService";
 
 function normalizeBudgets(payload) {
@@ -95,6 +95,7 @@ export default function BudgetsPage() {
         </div>
         <button
           type="button"
+          className="tertiary"
           onClick={() => {
             setSelectedBudget(null);
             setShowCreateForm((prev) => !prev);
