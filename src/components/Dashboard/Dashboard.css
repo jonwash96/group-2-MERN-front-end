@@ -99,13 +99,13 @@ main.dashboard > section#middle {
 
 	& #new-expense {
 		height:100%;
-		form {
+		padding-right:2em;
+		
+		& form {
 			display:flex;
 			flex-direction:column;
 			height:calc(100% - 50px);
 			overflow-y: scroll;
-
-			& label, button {margin-bottom:3px;}
 			
 			& .recurring-block {
 				margin-bottom: 1em;
@@ -197,12 +197,15 @@ main.dashboard > section#middle {
 				transform: translateX(24px);
 			}
 			
+			& label, button {margin-bottom:3px;}
+
 			& input, button, select {
 				padding:1% 10px;
 				border-radius:3px;
 				border:1px solid var(--bgf2);
 				height:10%;
 				max-height: 40px;
+				min-height:30px;
 				margin-bottom:4%;
 			}
 			& input[type=checkbox] {

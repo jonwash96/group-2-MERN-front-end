@@ -4,7 +4,7 @@ nav.landing-page {
 	top:0;
 	width:100%;
 	padding-top: 10px;
-	background-color: var(--bgb2);
+	background-color: var(--base);
 	
 	& div.wrapper {
 		margin:0 auto;
@@ -51,7 +51,8 @@ main#landing-page {
 
 section#hero {
 	& div.hero-wrapper {
-		background-color: var(--bgf1);
+		background-color: var(--brand-key);
+		color: black;
 		border-radius: 36px;
 		display:grid;
 		grid-template: 100% / 1fr 1fr;
@@ -67,6 +68,8 @@ section#hero {
 			& button {
 				width:200px;
 				margin-top: 25px;
+				background-color: var(--brand-base-sdark);
+				color: white
 			}
 		}
 		& div.image-wrapper {
@@ -155,6 +158,8 @@ div#landing-page-wrapper {
 footer {
 	text-align: center;
 	background-color: black;
-
+	color: white;
 	padding:4em 0;
+
+	& h5 {color:var(--brand-key);}
 }

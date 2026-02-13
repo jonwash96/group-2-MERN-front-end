@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 * {
   font-family: Montserrat, Arial, sans-serif;
-  color-scheme: light dark;
+  color-scheme:  light dark;
   box-sizing: border-box;
 }
 
@@ -9,20 +9,32 @@ body {margin:0;}
 
 @media (prefers-color-scheme: light) {
   * {
+    --base: #fff;
     --bg: #fff;
-    --bgf1: #ddd;
+    --bgf1: #dbe4e7;
     --bgf2: #bbb;
     --bgf2: #888;
     --bgb1: #dff0f0;
     --bgb2: #dfeaea;
-    --primary: #fff;
+    --primary: #344050;
+    --primary-op: #dbe4e7;
     --secondary: #1a1a1a;
     --tertiary: #888;
+    --tertiary-op: #777;
+    --brand-key: #DDF734;
+    --brand-base: #344050;
+    --brand-base-slight: #bCe1Ff;
+    --brand-base-light: #86A6CF;
+    --brand-base-dark: #2E3947;
+    --brand-base-sdark: #0E1927;
+    --brand-key-lgb: linear-gradient(to left, var(--brand-key), var(--brand-base));
+    --brand-base-dark-lg: linear-gradient(to right bottom, var(--brand-base), var(--brand-base-sdark));
   }
 }
 
 @media (prefers-color-scheme: dark) {
   * {
+    --base: #111;
     --bg: #222;
     --bgf1: #333;
     --bgf2: #444;
@@ -41,6 +53,7 @@ body {margin:0;}
     --brand-base-light: #86A6CF;
     --brand-base-dark: #2E3947;
     --brand-base-sdark: #0E1927;
+    --brand-base-udark: #0a0c17;
     --brand-key-lgb: linear-gradient(to left, var(--brand-key), var(--brand-base));
     --brand-base-dark-lg: linear-gradient(to right bottom, var(--brand-base), var(--brand-base-sdark));
   }

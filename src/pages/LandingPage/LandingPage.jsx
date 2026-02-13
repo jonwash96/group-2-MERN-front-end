@@ -101,7 +101,7 @@ export default function LandingPage({ simulateSignInOut }) {
 			<div>
 				<h5>$pend Sense</h5>
 				Designed & Developed by:<br /><br />
-				<span>Jonathan Washington</span><br />
+				<a href="https://www.github.com/jonwash96"><span>Jonathan Washington</span></a><br />
 				<span>Adam Myers</span><br />
 				<span>Rick Oweis</span><br /><br />
 				Winter 2026, In the USA.
