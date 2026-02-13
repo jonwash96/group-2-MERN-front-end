@@ -15,9 +15,31 @@ function getCurrentMonthValue(date = new Date()) {
 	return `${y}-${m}`;
 }
 
+function getMonthFromDateLike(value) {
+	if (typeof value === "string") {
+		const match = value.match(/^(\d{4})-(\d{2})/);
+		if (match) return `${match[1]}-${match[2]}`;
+	}
+
+	const d = new Date(value);
+	if (Number.isNaN(d.getTime())) return getCurrentMonthValue();
+	return getCurrentMonthValue(d);
+}
+
 function money(n) {
 	const num = Number(n) || 0;
 	return num.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
+function getTodayDateValue(date = new Date()) {
+	return date.toISOString().split("T")[0];
+}
+
+function normalizeBudgets(payload) {
+	if (Array.isArray(payload)) return payload;
+	if (Array.isArray(payload?.budgets)) return payload.budgets;
+	if (Array.isArray(payload?.data)) return payload.data;
+	return [];
 }
 
 export default function Dashboard() {
@@ -28,7 +50,7 @@ export default function Dashboard() {
 		title: "",
 		amount: "",
 		category: "",
-		date: "",
+		date: getTodayDateValue(),
 		isRecurring: false,
 	});
 
@@ -56,7 +78,7 @@ export default function Dashboard() {
 
 				setExpenses(Array.isArray(exp) ? exp : []);
 				setCategoryBreakdown(byCat?.categories ?? []);
-				setBudgets(budRes?.budgets ?? []);
+				setBudgets(normalizeBudgets(budRes));
 			} catch (error) {
 				setErr(error?.message || "Failed to load dashboard")
 			} finally {
@@ -93,6 +115,19 @@ export default function Dashboard() {
 		return m;
 	}, [categoryBreakdown])
 
+	const budgetSnapshots = useMemo(() => {
+		return budgets
+			.map((budget) => {
+				const limit = Number(budget.monthlyLimit) || 0;
+				const spent = spentByCategoryMap.get(budget.category) || 0;
+				const remaining = Math.max(0, limit - spent);
+				const usedPct = limit > 0 ? Math.min((spent / limit) * 100, 100) : 0;
+
+				return { ...budget, limit, spent, remaining, usedPct };
+			})
+			.sort((a, b) => b.usedPct - a.usedPct);
+	}, [budgets, spentByCategoryMap]);
+
 	// Total monthly budget and remaining
   const budgetTotals = useMemo(() => {
     const totalLimit = budgets.reduce((sum, b) => sum + (Number(b.monthlyLimit) || 0), 0);
@@ -109,7 +144,17 @@ export default function Dashboard() {
   }, [budgets, spentByCategoryMap]);
 
   // Recent transactions list (use real expenses)
-  const recentTransactions = useMemo(() => expenses.slice(0, 6), [expenses]);
+  const recentTransactions = useMemo(
+		() =>
+			[...expenses]
+				.sort((a, b) => {
+					const aTime = new Date(a.createdAt || a.date || 0).getTime();
+					const bTime = new Date(b.createdAt || b.date || 0).getTime();
+					return bTime - aTime;
+				})
+				.slice(0, 6),
+		[expenses],
+	);
 
 	// pie starts here
 	const calculateSpendingByCategory = () => {
@@ -120,7 +165,7 @@ export default function Dashboard() {
 		});
 		
 		expenses.forEach(expense => {
-			if (expense.category && categoryTotals.hasOwnProperty(expense.category)) {
+			if (expense.category && Object.prototype.hasOwnProperty.call(categoryTotals, expense.category)) {
 				categoryTotals[expense.category] += Number(expense.amount) || 0;
 			}
 		});
@@ -166,11 +211,11 @@ export default function Dashboard() {
     }));
   };
 
-  const handleCreateExpense = async (e) => {
-    e.preventDefault();
-    setErr("");
+	  const handleCreateExpense = async (e) => {
+	    e.preventDefault();
+	    setErr("");
 
-    try {
+	    try {
       const payload = {
         title: input.title.trim(),
         amount: Number(input.amount),
@@ -179,25 +224,43 @@ export default function Dashboard() {
         isRecurring: Boolean(input.isRecurring),
       };
 
-      await expenseService.create(payload);
+	      const createdExpense = await expenseService.create(payload);
+	      if (!createdExpense?._id) throw new Error("Failed to create expense");
 
-      // Refresh month data after create
-      const [exp, byCat] = await Promise.all([
-        expenseService.index({ month }),
-        expenseService.byCategory({ month }),
-      ]);
+	      // Show the new item immediately; refresh below keeps data fully in sync.
+	      setExpenses((prev) =>
+	        [createdExpense, ...prev.filter((exp) => exp._id !== createdExpense._id)].sort((a, b) => {
+	          const aTime = new Date(a.createdAt || a.date || 0).getTime();
+	          const bTime = new Date(b.createdAt || b.date || 0).getTime();
+	          return bTime - aTime;
+	        }),
+	      );
 
-      setExpenses(Array.isArray(exp) ? exp : []);
-      setCategoryBreakdown(byCat?.categories ?? []);
+	      const createdMonth = getMonthFromDateLike(createdExpense.date || payload.date);
+	      if (createdMonth !== month) setMonth(createdMonth);
 
-      // Reset form
-      setInput({
-        title: "",
-        amount: "",
-        category: "",
-        date: "",
-        isRecurring: false,
-      });
+	      try {
+	        // Refresh month data after create
+	        const [exp, byCat] = await Promise.all([
+	          expenseService.index({ month: createdMonth }),
+	          expenseService.byCategory({ month: createdMonth }),
+	        ]);
+
+	        setExpenses(Array.isArray(exp) ? exp : []);
+	        setCategoryBreakdown(byCat?.categories ?? []);
+	      } catch (refreshError) {
+	        // Keep optimistic row if refresh fails.
+	        console.error("@Dashboard > refreshAfterCreate()", refreshError);
+	      }
+
+	      // Reset form
+	      setInput({
+	        title: "",
+	        amount: "",
+	        category: "",
+	        date: getTodayDateValue(),
+	        isRecurring: false,
+	      });
     } catch (e2) {
       setErr(e2?.message || "Failed to create expense");
     }
@@ -265,7 +328,10 @@ if (err) {
             <div id="budget-remaining" className="card med">
 				<header>
 					<h6 className="title">Budget Remaining</h6>
-					<ImageIcn role="ph" size="12pt" />
+					<span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+						<Link to="/budgets">Manage</Link>
+						<ImageIcn role="ph" size="12pt" />
+					</span>
 				</header>
 
 				<p className="money-block amount">
@@ -281,7 +347,33 @@ if (err) {
 							{Math.round(budgetTotals.usedPct)}% used
                 		</div>
             		</div>
-				</div>
+
+				{budgetSnapshots.length > 0 ? (
+					<div className="budget-mini-list">
+						{budgetSnapshots.slice(0, 3).map((budget) => (
+							<div
+								key={budget._id || `${budget.name}-${budget.category}`}
+								className="budget-mini-item"
+							>
+								<div className="mini-row">
+									<span>{budget.name || budget.category}</span>
+									<span>{Math.round(budget.usedPct)}%</span>
+								</div>
+								<div className="mini-progress">
+									<div
+										className="mini-progress-fill"
+										style={{ width: `${Math.round(budget.usedPct)}%` }}
+									></div>
+								</div>
+							</div>
+						))}
+					</div>
+				) : (
+					<p className="detail" style={{ marginTop: 10 }}>
+						No budgets yet. <Link to="/budgets">Create your first budget</Link>
+					</p>
+				)}
+					</div>
 
             <div id="monthly-recurring" className="card med">
 				<header>
@@ -378,13 +470,19 @@ if (err) {
 						<span>Amount</span>
 						<span>Action</span>
 					</li>
-                {recentTransactions.map(transaction => 
+				{recentTransactions.map(transaction => 
 					<li key={transaction._id}>
 						<span>{transaction.title}</span>
 						<span>{transaction.category}</span>
 						<span>${money(transaction.amount)}</span>
 						<span>
-							<Link to={`/expenses/${transaction._id}/edit`}><ImageIcn content="✎" /></Link>
+							<Link
+								to={`/expenses/${transaction._id}/edit`}
+								className="icon-action"
+								aria-label={`Edit ${transaction.title || "transaction"}`}
+							>
+								<ImageIcn content="✏️" />
+							</Link>
 							<button
 								type="button"
 								className="icon-action"

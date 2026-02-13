@@ -22,6 +22,7 @@ export async function index() {
     return await handleJSONResponse(res);
   } catch (error) {
     console.error("@budgetsSVC > index()", error);
+    throw error;
   }
 }
 
@@ -36,28 +37,41 @@ export async function showOne(id) {
     return await handleJSONResponse(res);
   } catch (error) {
     console.error("@budgetsSVC > showOne()", error);
+    throw error;
   }
 }
 
 // POST /budgets
 export async function create(budget) {
   try {
+    // Supports both RESTful POST and legacy PUT create routes.
     let res = await fetch(BASE_URL, {
       method: "POST",
       headers: authHeaders(),
       body: JSON.stringify(budget),
     });
 
+    if (res.status === 404 || res.status === 405) {
+      res = await fetch(BASE_URL, {
+        method: "PUT",
+        headers: authHeaders(),
+        body: JSON.stringify(budget),
+      });
+    }
+
     return await handleJSONResponse(res);
   } catch (error) {
     console.error("@budgetsSVC > create()", error);
+    throw error;
   }
 }
 
 // PUT /budgets/:id
 export async function update(budget) {
   try {
-    let res = await fetch(BASE_URL, {
+    if (!budget?._id) throw new Error("Budget _id is required for update");
+
+    const res = await fetch(`${BASE_URL}/${budget._id}`, {
       method: "PUT",
       headers: authHeaders(),
       body: JSON.stringify(budget),
@@ -66,6 +80,7 @@ export async function update(budget) {
     return await handleJSONResponse(res);
   } catch (error) {
     console.error("@budgetsSVC > update()", error);
+    throw error;
   }
 }
 
@@ -81,5 +96,6 @@ export async function deleteBudget(id) {
     return true;
   } catch (error) {
     console.error("@budgetsSVC > deleteBudget()", error);
+    throw error;
   }
 }

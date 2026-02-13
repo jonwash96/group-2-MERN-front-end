@@ -23,6 +23,7 @@ export async function index({month, start, end} = {}) {
         return await handleJSONResponse(res);
     } catch (error) {
         console.error("@expenseSVC > index()", error)
+        throw error;
     }
 }
 
@@ -50,6 +51,7 @@ export async function byCategory({month, start, end} = {}) {
         return await handleJSONResponse(res);
     } catch (error) {
         console.error("@expenseSVC > byCategory()", error);
+        throw error;
     }
 }
 
@@ -66,6 +68,7 @@ export async function showOne(id) {
         return await handleJSONResponse(res);
     } catch (err) {
         console.error("@expenseSVC > showOne()", err)
+        throw err;
     }
 }
 
@@ -83,6 +86,7 @@ export async function create(expense) {
         return await handleJSONResponse(res);
     } catch (err) {
         console.error("@expenseSVC > create()", err)
+        throw err;
     }
 }
 
@@ -100,6 +104,7 @@ export async function update(expense) {
         return await handleJSONResponse(res);
     } catch (err) {
         console.error("@expenseSVC > update()", err)
+        throw err;
     }
 }
 
