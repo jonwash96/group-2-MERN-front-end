@@ -42,17 +42,20 @@ export default function Headbar({ simulateSignInOut }) {
                         <button className="type3">➕</button>
                         <ul>
                             <h6>Create</h6>
-                            <Link to="/expenses/new"><li>Expense</li></Link>
+                            <li><Link to="/expenses/new">Expense</Link></li>
+                            <li><Link to="/budgets">Budget</Link></li>
                         </ul>
                     </div>
             
                     <div id="profile-menu" className="flyout-menu">
-                        <span>{user.username}</span>
+                        <Link to="/profile">{user.username}</Link>
                         <ImageIcn role="profile-photo" size="small" />
                         <span> ▾</span>
                         <ul>
-                            <Link to="/profile"><li>Profile</li></Link>
-                            <Link to="/auth/sign-out"><li>Sign Out</li></Link>
+                            <li><Link to="/profile">Profile</Link></li>
+                            <li><Link to="/expenses">Expenses</Link></li>
+                            <li><Link to="/budgets">Budgets</Link></li>
+                            <li><Link to="/auth/sign-out">Sign Out</Link></li>
                         </ul>
                     </div>
 
