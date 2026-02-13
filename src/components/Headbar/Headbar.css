@@ -6,7 +6,11 @@
     padding: 10px 1em 10px 1em;
     /* border: 1px solid cyan; */
 
-    & > div {display:flex; align-items:center; gap:1em;}
+    & > div {
+        display:flex; 
+        align-items:center; 
+        gap:calc(1em + (1vw /4));
+    }
     & .left {justify-content:flex-start;}
     & .center {justify-content:center;}
     & .right {justify-content:flex-end;}
@@ -46,6 +50,32 @@
             color:grey;
         }
     }
+}
+
+div#dashboard-date-menu {
+    & label {
+        padding: 6px;
+        border-radius: 6px;
+
+        &:hover, &:active {
+            cursor:grab;
+            border:1px solid var(--tertiary);
+        }
+        &:active {cursor:grabbing;}
+    }
+    
+    & input[type=checkbox]:checked  + & label {
+        border:1px solid var(--brand-key);
+    }
+    & input[type=checkbox] {display:none;}
+
+    & ul {
+        transform:translate(0, -10px);
+        background-color: var(--bgf2);
+        transform: translate(-50%, 2%);
+    }
+
+    & h6 {padding:6px}
 }
 
 #create-menu {

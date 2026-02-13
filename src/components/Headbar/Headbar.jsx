@@ -23,6 +23,8 @@ export default function Headbar() {
         });
     };
 
+const month = 2;
+
     return(
         <section id="headbar">
             <div className="left">
@@ -38,6 +40,14 @@ export default function Headbar() {
 
             <div className="right">
                 {user ? <>
+                    <div id="dashboard-date-menu" className="flyout-menu">
+                        <label htmlFor="calendar-toggle">📆</label>
+                        <input type="checkbox" id="calendar-toggle" />
+                        <ul style={{ padding: "0 12px", gap: 12, alignItems: "center" }}>
+                            <h6 style={{ margin: 0 }}>View Month</h6>
+                            <li><input id="set-dashboard-date" type="month" value={month} onChange={(e) => setMonth(e.target.value)} /></li>
+                        </ul>
+                    </div>
                     <div id="create-menu" className="flyout-menu">
                         <button className="type3">➕</button>
                         <ul>
