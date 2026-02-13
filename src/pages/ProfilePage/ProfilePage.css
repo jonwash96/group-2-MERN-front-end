@@ -1,0 +1,14 @@
+main#profile {
+	width:100vw;
+	height:100vh;
+	display:flex;
+	align-items: center;
+	flex-direction: column;
+	margin-top: 12%;
+
+	& img {
+		width:200px;
+		height:200px;
+		border-radius:50%;;
+	}
+}
