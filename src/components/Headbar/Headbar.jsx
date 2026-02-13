@@ -26,7 +26,7 @@ export default function Headbar({ simulateSignInOut }) {
     return(
         <section id="headbar">
             <div className="left">
-                <a href="/">Spend Sense</a>
+                <Link to="/" id="logotype">$pend Sense</Link>
             </div>
 
             <div className="center">
@@ -38,7 +38,6 @@ export default function Headbar({ simulateSignInOut }) {
 
             <div className="right">
                 {user ? <>
-                    <Link to="/dashboard">Dashboard</Link>
                     <div id="create-menu" className="flyout-menu">
                         <button className="type3">➕</button>
                         <ul>
