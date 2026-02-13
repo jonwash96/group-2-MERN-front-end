@@ -21,15 +21,16 @@ function getCurrentMonthValue(date = new Date()) {
   const m = String(date.getMonth() + 1).padStart(2, "0");
   return `${y}-${m}`; // "2026-02"
 }
+
 function RequireAuth({ isAuthed, children }) {
   if (!isAuthed) return <Navigate to="/" replace />;
   return children;
 }
 
-function AppLayout({ simulateSignInOut, children }) {
+function AppLayout({ children }) {
   return (
     <>
-      <Headbar simulateSignInOut={simulateSignInOut} />
+      <Headbar/>
       {children}
     </>
   );
@@ -54,7 +55,6 @@ function App() {
         username: import.meta.env.VITE_USERNAME,
         password: import.meta.env.VITE_PASSWORD,
       });
-      console.log("@signin", signedInUser);
       setUser(signedInUser);
       setUid(signedInUser._id);
     };
@@ -91,9 +91,7 @@ function App() {
     [expenses],
   );
 
-  const simulateSignInOut = (bool) => setLoggedInUserTest(bool);
-
-  const isAuthed = loggedInUserTest;
+  const isAuthed = user?._id;
 
   if (!user?.username) return <p>Loading. . .</p>;
 
@@ -103,17 +101,17 @@ function App() {
         {/* Public */}
         <Route
           path="/"
-          element={<LandingPage simulateSignInOut={simulateSignInOut} />}
+          element={<LandingPage />}
         />
 
         <Route
           path="/sign-up"
-          element={<SignUpPage simulateSignInOut={simulateSignInOut} />}
+          element={<SignUpPage />}
         />
 
         <Route
           path="/sign-in"
-          element={<SignInPage simulateSignInOut={simulateSignInOut} />}
+          element={<SignInPage />}
         />
 
         {/* Protected */}
@@ -121,7 +119,7 @@ function App() {
           path="/dashboard"
           element={
             <RequireAuth isAuthed={isAuthed}>
-              <AppLayout simulateSignInOut={simulateSignInOut}>
+              <AppLayout>
                 <Dashboard
                   expenses={expenses}
                   month={month}
@@ -139,7 +137,7 @@ function App() {
           path="/expenses"
           element={
             <RequireAuth isAuthed={isAuthed}>
-              <AppLayout simulateSignInOut={simulateSignInOut}>
+              <AppLayout>
                 <ExpensePage />
               </AppLayout>
             </RequireAuth>
@@ -150,7 +148,7 @@ function App() {
           path="/expenses/new"
           element={
             <RequireAuth isAuthed={isAuthed}>
-              <AppLayout simulateSignInOut={simulateSignInOut}>
+              <AppLayout>
                 <NewExpensePage />
               </AppLayout>
             </RequireAuth>
@@ -161,7 +159,7 @@ function App() {
           path="/expenses/:id/edit"
           element={
             <RequireAuth isAuthed={isAuthed}>
-              <AppLayout simulateSignInOut={simulateSignInOut}>
+              <AppLayout>
                 <EditExpensePage />
               </AppLayout>
             </RequireAuth>

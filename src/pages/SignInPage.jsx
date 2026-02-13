@@ -1,10 +1,11 @@
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useState, useContext } from 'react';
+import { useNavigate, Link } from 'react-router';
 import * as authService from '../services/authService';
+import { UserContext } from "../contexts/UserContext";
 
-export default function SignInPage({ setUser }) {
+export default function SignInPage({ simulateSignInOut }) {
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -35,6 +36,7 @@ export default function SignInPage({ setUser }) {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
+            autoComplete="username"
           />
         </div>
         
@@ -45,13 +47,14 @@ export default function SignInPage({ setUser }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            autoComplete="current-password"
           />
         </div>
         
         <button type="submit">Sign In</button>
       </form>
       
-      <p>Don't have an account? <a href="/sign-up">Sign Up</a></p>
+      <p>Don't have an account? <Link to="/sign-up">Sign Up</Link></p>
     </div>
   );
 }
