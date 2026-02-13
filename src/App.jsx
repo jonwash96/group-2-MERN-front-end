@@ -107,6 +107,11 @@ function App() {
 
         {/* Protected */}
         <Route
+          path="/sign-out"
+          element={<LandingPage signout={true} />}
+        />
+
+        <Route
           path="/dashboard"
           element={
             <RequireAuth isAuthed={isAuthed}>

@@ -1,8 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
 import { useNavigate, Link } from "react-router"
+import { UserContext } from "../../contexts/UserContext";
 import './LandingPage.css'
 
-export default function LandingPage({ isAuthed }) {
+export default function LandingPage({ isAuthed, signout }) {
+	const { user, setUser } = useContext(UserContext);
 	const [joinImages, setJoinImages] = useState([
 		{name:'image', description:'', url:'/landing-page/img1.jpg'},
 		{name:'image', description:'', url:'/landing-page/img2.jpg'},
@@ -13,6 +15,8 @@ export default function LandingPage({ isAuthed }) {
 	])
 
 	const navigate = useNavigate();
+
+	useEffect(() => signout && setUser(null), [signout]);
 
 	const goToSignIn = () => {
 		navigate("/sign-in");
