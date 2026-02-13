@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import * as userService from "../../services/userService";
 import { Link } from 'react-router'
-import './profilePage.css'
+import './ProfilePage.css'
 
 export default function ProfilePage() {
   const { user, setUser } = useContext(UserContext);
@@ -60,7 +60,6 @@ export default function ProfilePage() {
             <b>User ID:</b> {u?._id || "-"}
           </p>
 
-          {/* Optional: add edit profile later */}
           {/* <Link to="/profile/edit">Edit Profile</Link> */}
         </div>
       </div>
