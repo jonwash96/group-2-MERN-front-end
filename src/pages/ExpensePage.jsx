@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import * as userService from '../services/userService';
 import * as expenseService from '../services/expenseService';
 
-export default function ExpensesPage({ user }) {
+export default function ExpensesPage() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -15,8 +14,9 @@ export default function ExpensesPage({ user }) {
   const loadExpenses = async () => {
     try {
       setLoading(true);
-      const data = await userService.getUserItem(user._id, 'expenses', 100);
-      setExpenses(data || []);
+      setError('');
+      const data = await expenseService.index();
+      setExpenses(Array.isArray(data) ? data : []);
     } catch (err) {
       setError('Failed to load expenses');
       console.error(err);
@@ -30,7 +30,7 @@ export default function ExpensesPage({ user }) {
     
     try {
       await expenseService.deleteExpense(id);
-      setExpenses(expenses.filter(exp => exp._id !== id));
+      setExpenses((prev) => prev.filter((exp) => exp._id !== id));
     } catch (err) {
       setError('Failed to delete expense');
     }
@@ -67,7 +67,7 @@ export default function ExpensesPage({ user }) {
                 <td>{expense.notes || '-'}</td>
                 <td>
                   <Link to={`/expenses/${expense._id}/edit`}>Edit</Link> | 
-                  <Link to={`expenses/${expense._id}`}>View</Link>
+                  <Link to={`/expenses/${expense._id}`}>View</Link>
                   <button onClick={() => handleDelete(expense._id)}>Delete</button>
                 </td>
               </tr>

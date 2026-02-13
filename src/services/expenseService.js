@@ -117,5 +117,6 @@ export async function deleteExpense(id) {
         return true;
     } catch (err) {
         console.error("@expenseSVC > deleteExpense()", err)
+        throw err;
     }
 }

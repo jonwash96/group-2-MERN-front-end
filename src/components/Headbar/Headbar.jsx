@@ -26,7 +26,7 @@ export default function Headbar({ simulateSignInOut }) {
     return(
         <section id="headbar">
             <div className="left">
-                <Link to="/" id="logotype">$pend Sense</Link>
+                <Link to="/dashboard" id="logotype">$pend Sense</Link>
             </div>
 
             <div className="center">
