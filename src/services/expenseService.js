@@ -86,15 +86,15 @@ export async function create(expense) {
     }
 }
 
-export async function update(track) {
+export async function update(expense) {
     try {
-        const res = await fetch(`${BASE_URL}/${track._id}`, {
+        const res = await fetch(`${BASE_URL}/${expense._id}`, {
             method: 'PUT',
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem('token')}`
             },
-            body: JSON.stringify(track)
+            body: JSON.stringify(expense)
         });
 
         return await handleJSONResponse(res);

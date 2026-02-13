@@ -67,6 +67,7 @@ export default function ExpensesPage({ user }) {
                 <td>{expense.notes || '-'}</td>
                 <td>
                   <Link to={`/expenses/${expense._id}/edit`}>Edit</Link> | 
+                  <Link to={`expenses/${expense._id}`}>View</Link>
                   <button onClick={() => handleDelete(expense._id)}>Delete</button>
                 </td>
               </tr>

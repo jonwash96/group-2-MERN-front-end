@@ -11,6 +11,7 @@ import SignInPage from "./pages/SignInPage";
 import ExpensePage from "./pages/ExpensePage";
 import NewExpensePage from "./pages/NewExpensePage";
 import EditExpensePage from "./pages/EditExpensePage";
+import ExpenseShowPage from "./pages/ExpenseShowPage/ExpenseShowPage"
 
 import * as expenseService from "./services/expenseService";
 import * as authService from "./services/authService";
@@ -139,6 +140,17 @@ function App() {
             <RequireAuth isAuthed={isAuthed}>
               <AppLayout>
                 <ExpensePage />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/expenses/:id"
+          element={
+            <RequireAuth isAuthed={isAuthed}>
+              <AppLayout>
+                <ExpenseShowPage />
               </AppLayout>
             </RequireAuth>
           }
