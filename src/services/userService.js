@@ -27,6 +27,9 @@ export async function index(uid) {
     // getUserBudgets
 export async function getUserItem(uid, item, limit=10) {
     try {
+        const qs = new URLSearchParams();
+        if (limit) qs.set("limit", limit)
+
         const res = await fetch(BASE_URL, {
             method: 'GET',
             headers: { 

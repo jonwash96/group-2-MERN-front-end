@@ -203,6 +203,25 @@ export default function Dashboard() {
     }
   };
 
+  const handleDeleteTransaction = async (expenseId) => {
+    if (!window.confirm("Delete this transaction?")) return;
+    setErr("");
+
+    try {
+      await expenseService.deleteExpense(expenseId);
+
+      const [exp, byCat] = await Promise.all([
+        expenseService.index({ month }),
+        expenseService.byCategory({ month }),
+      ]);
+
+      setExpenses(Array.isArray(exp) ? exp : []);
+      setCategoryBreakdown(byCat?.categories ?? []);
+    } catch (e2) {
+      setErr(e2?.message || "Failed to delete expense");
+    }
+  };
+
   if (loading) return <p style={{ padding: 16 }}>Loading dashboard…</p>;
 
 if (err) {
@@ -366,7 +385,14 @@ if (err) {
 						<span>${money(transaction.amount)}</span>
 						<span>
 							<Link to={`/expenses/${transaction._id}/edit`}><ImageIcn content="✎" /></Link>
-							<Link to={`/expenses/${transaction._id}/edit`}><ImageIcn content="🗑️" /></Link>
+							<button
+								type="button"
+								className="icon-action"
+								onClick={() => handleDeleteTransaction(transaction._id)}
+								aria-label={`Delete ${transaction.title || "transaction"}`}
+							>
+								<ImageIcn content="🗑️" />
+							</button>
 						</span>
 					</li>
 				)}
