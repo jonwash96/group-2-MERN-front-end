@@ -92,7 +92,7 @@ function App() {
         {/* Public */}
         <Route
           path="/"
-          element={<LandingPage />}
+          element={<LandingPage isAuthed={isAuthed} />}
         />
 
         <Route

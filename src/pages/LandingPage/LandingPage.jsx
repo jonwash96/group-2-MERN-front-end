@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useNavigate, Link } from "react-router"
 import './LandingPage.css'
 
-export default function LandingPage({ simulateSignInOut }) {
+export default function LandingPage({ isAuthed }) {
 	const [joinImages, setJoinImages] = useState([
 		{name:'image', description:'', url:'/landing-page/img1.jpg'},
 		{name:'image', description:'', url:'/landing-page/img2.jpg'},
@@ -17,9 +17,17 @@ export default function LandingPage({ simulateSignInOut }) {
 	const goToSignIn = () => {
 		navigate("/sign-in");
 	};
+	console.log("@LandingPage", isAuthed)
 
 	const goToSignUp = () => {
 		navigate("/sign-up");
+	};
+	const goToSignDashboard = () => {
+		navigate("/dashboard");
+	};
+
+	const goToSignOut = () => {
+		navigate("/sign-out");
 	};
 
 	return(
@@ -34,10 +42,19 @@ export default function LandingPage({ simulateSignInOut }) {
 					<Link to="/info">Info</Link>
 				</div>
 
-				<div className="right">
-					<button type="button" onClick={goToSignIn} className="secondary">Log In</button>
-					<button type="button" onClick={goToSignUp} className="primary">Sign Up</button>
-				</div>
+				{isAuthed 
+				? (<>
+					<div className="right">
+						<button type="button" onClick={goToSignDashboard} className="primary">Dashboard</button>
+						<button type="button" onClick={goToSignOut} className="secondary">Sign Out</button>
+					</div> 
+				</>) : (<>
+					<div className="right">
+						<button type="button" onClick={goToSignIn} className="secondary">Log In</button>
+						<button type="button" onClick={goToSignUp} className="primary">Sign Up</button>
+					</div> 
+				</>)
+			}
 			</div>
 		</nav>
 
@@ -45,6 +62,7 @@ export default function LandingPage({ simulateSignInOut }) {
 			<section id="hero">
 				<div className="hero-wrapper">
 					<header className="text-block">
+				<img src="/logosolo.png" width="200px" />
 						<h1>Money, money, money, money. Gotta Get That Bread</h1>
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus modi perferendis sequi, cum nisi velit saepe soluta corporis rerum quasi voluptatum iste iure nemo nam atque laborum. Voluptatem, minima ipsum.</p>
 
