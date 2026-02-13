@@ -52,8 +52,7 @@ export default function Headbar({ simulateSignInOut }) {
                         <span> ▾</span>
                         <ul>
                             <Link to="/profile"><li>Profile</li></Link>
-                            {/* <Link to="/auth/sign-out"><li>Sign Out</li></Link> */}
-                            <li onClick={()=>simulateSignInOut(false)}>Sign Out</li>
+                            <Link to="/auth/sign-out"><li>Sign Out</li></Link>
                         </ul>
                     </div>
 
@@ -71,7 +70,7 @@ export default function Headbar({ simulateSignInOut }) {
                 </> : <>
                     <div id="nouser-auth">
                         <Link to="/auth/sign-up">Sign Up</Link>
-                        <Link to="/auth/sing-in">Sign In</Link>
+                        <Link to="/auth/sign-in">Sign In</Link>
                     </div>
                 </>}
             </div>
