@@ -20,6 +20,7 @@
 }
 
 a {color: var(--primary);}
+a:hover {cursor:pointer;}
 button:hover {cursor:pointer;}
 
 button.type3 {

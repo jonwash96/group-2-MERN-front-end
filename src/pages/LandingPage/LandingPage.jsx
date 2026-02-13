@@ -4,11 +4,12 @@ import './LandingPage.css'
 
 export default function LandingPage({ simulateSignInOut }) {
 	const [joinImages, setJoinImages] = useState([
-		{name:'image', description:'', url:'/svg/noimg.svg'},
-		{name:'image', description:'', url:'/svg/noimg.svg'},
-		{name:'image', description:'', url:'/svg/noimg.svg'},
-		{name:'image', description:'', url:'/svg/noimg.svg'},
-		{name:'image', description:'', url:'/svg/noimg.svg'},
+		{name:'image', description:'', url:'/landing-page/img1.jpg'},
+		{name:'image', description:'', url:'/landing-page/img2.jpg'},
+		{name:'image', description:'', url:'/landing-page/img3.jpg'},
+		{name:'image', description:'', url:'/landing-page/img4.jpg'},
+		{name:'image', description:'', url:'/landing-page/img5.jpg'},
+		{name:'image', description:'', url:'/landing-page/img6.jpg'},
 	])
 
 	const navigate = useNavigate();
@@ -52,7 +53,7 @@ export default function LandingPage({ simulateSignInOut }) {
 					</header>
 
 					<div className="image-wrapper">
-						<img src="/svg/noimg.svg" />
+						<img src="/landing-page/hero.png" />
 					</div>
 				</div>
 			</section>
@@ -76,7 +77,7 @@ export default function LandingPage({ simulateSignInOut }) {
 
 			<section id="expense-tracker" className="right">
 				<div className="img">
-					<img src="/svg/noimg.svg" alt="Expense Tracker Image" />
+					<img src="/landing-page/screenshot1.jpg" alt="Expense Tracker Image" />
 				</div>
 				<div className="text-block">
 					<h2>Track Your Expenses</h2>
@@ -87,7 +88,7 @@ export default function LandingPage({ simulateSignInOut }) {
 
 			<section id="budgets" className="left">
 				<div className="img">
-					<img src="/svg/noimg.svg" alt="Budget Tracker Image" />
+					<img src="/landing-page/screenshot2.jpg" alt="Budget Tracker Image" />
 				</div>
 				<div className="text-block">
 					<h2>Create Budgets</h2>

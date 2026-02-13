@@ -58,6 +58,7 @@ section#hero {
 		grid-template: 100% / 1fr 1fr;
 		padding:2em;
 		height:45vh;
+		overflow: hidden;
 
 		& header {
 			display: flex;
@@ -71,11 +72,21 @@ section#hero {
 				background-color: var(--brand-base-sdark);
 				color: white
 			}
+			& div.image-wrapper {
+				display:flex;
+				justify-content: center;
+				align-items: end;
+			}
 		}
 		& div.image-wrapper {
 			display:flex;
 			justify-content: center;
 			align-items: end;
+			
+			& img {
+				height:90%;
+				transform:translateY(40px);
+			}
 		}
 	}
 }
@@ -124,6 +135,8 @@ div#landing-page-wrapper {
 			display:flex;
 			justify-content: center;
 			align-items: end;
+			
+			& img {width:480px;}
 		}
 	}
 	& section.right {
@@ -151,6 +164,7 @@ div#landing-page-wrapper {
 			display:flex;
 			justify-content: center;
 			align-items: end;
+			& img {width:480px;}
 		}
 	}
 }
