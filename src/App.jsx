@@ -12,6 +12,7 @@ import ExpensePage from "./pages/ExpensePage";
 import NewExpensePage from "./pages/NewExpensePage";
 import EditExpensePage from "./pages/EditExpensePage";
 import ExpenseShowPage from "./pages/ExpenseShowPage/ExpenseShowPage"
+import ProfilePage from "./pages/ProfilePage/ProfilePage"
 
 import * as expenseService from "./services/expenseService";
 import * as authService from "./services/authService";
@@ -129,6 +130,17 @@ function App() {
                   loading={loading}
                   error={error}
                 />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth isAuthed={isAuthed}>
+              <AppLayout>
+                <ProfilePage />
               </AppLayout>
             </RequireAuth>
           }
