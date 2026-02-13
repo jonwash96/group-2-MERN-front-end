@@ -86,8 +86,6 @@ function App() {
 
   const isAuthed = user?._id;
 
-  if (!user?.username) return <p>Loading. . .</p>;
-
   return (
     <>
       <Routes>
