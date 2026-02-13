@@ -15,7 +15,7 @@ main#auth {
 		box-shadow: 0 0 50px #0004;
 		overflow:hidden;
 
-		& section.left {
+		& section.graphic {
 			width:100%;
 			height:100%;
 			display:flex;
@@ -25,9 +25,10 @@ main#auth {
 			background-color: var(--brand-key);
 			font-size: 1200pt;
 			color: #fff2;
+			overflow:hidden;
 		}
 
-		& section.right {
+		& section.form {
 			width:100%;
 			height:100%;
 			display:flex;

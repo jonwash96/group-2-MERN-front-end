@@ -6,7 +6,7 @@ import { UserContext } from "./contexts/UserContext";
 import Headbar from "./components/Headbar/Headbar";
 import Dashboard from "./components/Dashboard/Dashboard";
 import LandingPage from "./pages/LandingPage/LandingPage";
-import SignUpPage from "./pages/SignUpPage";
+import SignUpPage from "./pages/Auth/SignUpPage";
 import SignInPage from "./pages/Auth/SignInPage";
 import ExpensePage from "./pages/ExpensePage";
 import NewExpensePage from "./pages/NewExpensePage";

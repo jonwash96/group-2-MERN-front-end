@@ -14,7 +14,7 @@ export default function SignInPage({ simulateSignInOut }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    
+
     try {
       const user = await authService.signIn({ username, password });
       setUser(user);
@@ -27,28 +27,40 @@ export default function SignInPage({ simulateSignInOut }) {
   return (
     <main id="auth">
       <div className="inner-wrapper">
-        <section className="left">
+        <section className="graphic">
           $
         </section>
 
-        <section className="right">
+        <section className="form">
           <Link to="/" className="exit"><div>X</div></Link>
           <div className="logotype">$pend Sense</div>
-      <h1>Sign In</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      
-      <form onSubmit={handleSubmit}>
-        <label>Username:</label>
-        <input id="username"  type="text"  value={username} onChange={(e) => setUsername(e.target.value)} required autoComplete="username" />
-        
-        <label>Password:</label>
-        <input id="password" type="password"  value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" />
-        
-        <button type="submit">Sign In</button>
-      </form>
-      
-      <p>Don't have an account? <Link to="/sign-up">Sign Up</Link></p>
-      </section>
+          <h1>Sign In</h1>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+
+          <form onSubmit={handleSubmit}>
+            <label>Username:</label>
+            <input id="username" 
+            type="text" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            required 
+            autoComplete="username" 
+            />
+
+            <label>Password:</label>
+            <input id="password" 
+            type="password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+            autoComplete="current-password" 
+            />
+
+            <button type="submit">Sign In</button>
+          </form>
+
+          <p>Don't have an account? <Link to="/sign-up">Sign Up</Link></p>
+        </section>
       </div>
     </main>
   );
