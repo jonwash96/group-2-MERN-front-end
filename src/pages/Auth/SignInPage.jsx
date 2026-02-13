@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router';
-import * as authService from '../services/authService';
-import { UserContext } from "../contexts/UserContext";
+import * as authService from '../../services/authService';
+import { UserContext } from "../../contexts/UserContext";
+import './Auth.css'
 
 export default function SignInPage({ simulateSignInOut }) {
   const navigate = useNavigate();
@@ -24,37 +25,31 @@ export default function SignInPage({ simulateSignInOut }) {
   };
 
   return (
-    <div>
+    <main id="auth">
+      <div className="inner-wrapper">
+        <section className="left">
+          $
+        </section>
+
+        <section className="right">
+          <Link to="/" className="exit"><div>X</div></Link>
+          <div className="logotype">$pend Sense</div>
       <h1>Sign In</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Username:</label>
-          <input 
-            type="text" 
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            autoComplete="username"
-          />
-        </div>
+        <label>Username:</label>
+        <input id="username"  type="text"  value={username} onChange={(e) => setUsername(e.target.value)} required autoComplete="username" />
         
-        <div>
-          <label>Password:</label>
-          <input 
-            type="password" 
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            autoComplete="current-password"
-          />
-        </div>
+        <label>Password:</label>
+        <input id="password" type="password"  value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" />
         
         <button type="submit">Sign In</button>
       </form>
       
       <p>Don't have an account? <Link to="/sign-up">Sign Up</Link></p>
-    </div>
+      </section>
+      </div>
+    </main>
   );
 }

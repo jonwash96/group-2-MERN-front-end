@@ -7,7 +7,7 @@ import Headbar from "./components/Headbar/Headbar";
 import Dashboard from "./components/Dashboard/Dashboard";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUpPage from "./pages/SignUpPage";
-import SignInPage from "./pages/SignInPage";
+import SignInPage from "./pages/Auth/SignInPage";
 import ExpensePage from "./pages/ExpensePage";
 import NewExpensePage from "./pages/NewExpensePage";
 import EditExpensePage from "./pages/EditExpensePage";

@@ -35,6 +35,14 @@ body {margin:0;}
     --secondary-op: #444;
     --tertiary: #888;
     --tertiary-op: #777;
+    --brand-key: #DDF734;
+    --brand-base: #344050;
+    --brand-base-slight: #bCe1Ff;
+    --brand-base-light: #86A6CF;
+    --brand-base-dark: #2E3947;
+    --brand-base-sdark: #0E1927;
+    --brand-key-lgb: linear-gradient(to left, var(--brand-key), var(--brand-base));
+    --brand-base-dark-lg: linear-gradient(to right bottom, var(--brand-base), var(--brand-base-sdark));
   }
 }
 
@@ -42,7 +50,6 @@ ul {list-style:none;padding:0;}
 
 /* BASIC COLORS */
 * {
-  --brand-key: #1d4;
   --cwhite: #cded;
   --lsteelblue: #406c8f;
   --steelblue: #003c5f;

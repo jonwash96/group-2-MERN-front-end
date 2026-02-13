@@ -18,6 +18,8 @@
 }
 
 a {color: var(--primary);}
+button:hover {cursor:pointer;}
+
 button.type3 {
   background-color: transparent;
   border:1px solid var(--tertiary);

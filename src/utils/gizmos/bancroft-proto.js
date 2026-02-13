@@ -43,25 +43,30 @@ String.prototype._epochTo = epochTo;
 Number.prototype._epochTo = epochTo;
 function epochTo(format) {
     if (!new Date(this)) return;
-    const date = new Date(this);
-    const diff = Date.now() - Number(this);
-    const oneDay = 86400000;
-    const oneHour = 3600000;
-    const sixHours = 21600000;
-    switch (format) {
-        case 'recent': {
-            if (diff < oneHour) {
-                return Math.floor(diff / (sixHours / 6 / 60))+" minutes ago";
-            } else if (diff < sixHours) {
-                return Math.floor(diff / (sixHours / 6))+" hours ago";
-            } else if (diff <  oneDay*2) {
-                return "Yesterday at "+date.toLocaleTimeString().replace(/:\d\d?\s/, ' ');
-            } else if (diff < oneDay * 6) {
-                return date.getDay().split(' ')[0]+" at"+date.toLocaleTimeString().replace(/:\d\d?\s/, ' ');
-            } else {
-                return date.toLocaleDateString();
+    try {
+        const date = new Date(this);
+        const diff = Date.now() - Number(this);
+        const oneDay = 86400000;
+        const oneHour = 3600000;
+        const sixHours = 21600000;
+        switch (format) {
+            case 'recent': {
+                if (diff < oneHour) {
+                    return Math.floor(diff / (sixHours / 6 / 60))+" minutes ago";
+                } else if (diff < sixHours) {
+                    return Math.floor(diff / (sixHours / 6))+" hours ago";
+                } else if (diff <  oneDay*2) {
+                    return "Yesterday at "+date.toLocaleTimeString().replace(/:\d\d?\s/, ' ');
+                } else if (diff < oneDay * 6) {
+                    return date.getDay().split(' ')[0]+" at"+date.toLocaleTimeString().replace(/:\d\d?\s/, ' ');
+                } else {
+                    return date.toLocaleDateString();
+                }
             }
         }
+    } catch (err) {
+        console.warn("epochTo encountered a non-fatal error.", err);
+        return this;
     }
 }
 
