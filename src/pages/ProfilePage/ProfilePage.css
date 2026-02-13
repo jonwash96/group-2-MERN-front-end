@@ -6,9 +6,27 @@ main#profile {
 	flex-direction: column;
 	margin-top: 12%;
 
+	& h1 {color:var(--brand-key);}
+	
+	& b {
+		color:var(--brand-base);
+		font-size:14pt;
+		display: block;
+		margin-bottom: 6px;
+	}
+
+	
 	& img {
 		width:200px;
 		height:200px;
 		border-radius:50%;;
 	}
+	
+	& .text-block {
+		padding:18px;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	main#profile b {color:var(--brand-base-light);}
 }

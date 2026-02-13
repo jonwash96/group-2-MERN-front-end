@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import * as userService from "../../services/userService";
+import { Link } from 'react-router'
 import './profilePage.css'
 
 export default function ProfilePage() {
@@ -42,27 +43,28 @@ export default function ProfilePage() {
       <div className="img">
         <img src={u.photo.url} />
       </div>
-      <div style={{ padding: 16 }}>
+      <div className="text-block">
         <h1>My Profile</h1>
 
-        <div style={{ marginTop: 12 }}>
+        <div>
           <p>
-            <b>Username:</b><br /> {u?.username || "-"}
+            <b>Username:</b> {u?.username || "-"}
           </p>
           <p>
-            <b>Email:</b><br /> {u?.email || "-"}
+            <b>Email:</b> {u?.email || "-"}
           </p>
           <p>
-            <b>Display Name:</b><br /> {u?.displayName || "-"}
+            <b>Display Name:</b> {u?.displayName || "-"}
           </p>
           <p>
-            <b>User ID:</b><br /> {u?._id || "-"}
+            <b>User ID:</b> {u?._id || "-"}
           </p>
 
           {/* Optional: add edit profile later */}
           {/* <Link to="/profile/edit">Edit Profile</Link> */}
         </div>
       </div>
+      <Link to="/dashboard"><button className="primary">Dashboard</button></Link>
     </main>
   );
 }
