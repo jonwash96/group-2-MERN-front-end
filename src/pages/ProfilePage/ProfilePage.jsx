@@ -32,6 +32,9 @@ export default function ProfilePage() {
   if (!profile && user) return <p>No profile found.</p>;
 
   const u = profile || user;
+  console.log("user:", user)
+  console.log("profile:", profile)
+  console.log("u:", u)
 
   return (
     <div style={{ padding: 16 }}>

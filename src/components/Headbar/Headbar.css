@@ -104,7 +104,7 @@
     &:hover > ul {display:block;}
 
     & ul {
-        transform: translate(10px, 60px);
+        transform: translate(10px, 100px);
         background-color: var(--bgf2);
 
         & li {
@@ -125,9 +125,8 @@
         position:absolute;
         width:150px;
         height: 60px;
-        transform: translate(-10px, 0);
+        transform: translate(-10px, 10px);
         cursor:pointer;
-        pointer-events: none;
     }
 }
 
