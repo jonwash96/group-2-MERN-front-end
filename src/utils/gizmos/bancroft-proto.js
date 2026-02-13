@@ -58,7 +58,7 @@ function epochTo(format) {
                 } else if (diff <  oneDay*2) {
                     return "Yesterday at "+date.toLocaleTimeString().replace(/:\d\d?\s/, ' ');
                 } else if (diff < oneDay * 6) {
-                    return date.getDay().split(' ')[0]+" at"+date.toLocaleTimeString().replace(/:\d\d?\s/, ' ');
+                    return String(date).split(' ')[0]+" at"+date.toLocaleTimeString().replace(/:\d\d?\s/, ' ');
                 } else {
                     return date.toLocaleDateString();
                 }

@@ -8,7 +8,7 @@ import { UserContext } from "../../contexts/UserContext";
 import './Headbar.css'
 import '../../utils/gizmos/bancroft-proto'
 
-export default function Headbar({ simulateSignInOut }) {
+export default function Headbar() {
     const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
     const [input, setInput] = useState({});
