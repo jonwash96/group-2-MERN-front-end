@@ -7,7 +7,9 @@
     overflow:hidden;
     & li {padding:10px;}
   }
-  &:hover > ul, &:active > ul {display:block;cursor:pointer;}
+  &:hover > ul, &:focus > ul {display:block;cursor:pointer;}
+  & > button:focus + ul {display:block;cursor:pointer;}
+  & > input[type=checkbox]:checked + ul {display:block;cursor:pointer;}
   & li:hover {cursor:pointer;}
 }
 

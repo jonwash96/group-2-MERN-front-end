@@ -63,6 +63,8 @@ export default function Dashboard() {
 	const [loading, setLoading] = useState(true);
 	const [err, setErr] = useState("");
 
+	const handleSetMonth = (input) => setMonth(input);
+
 	// Load expenses, category breakdown and budgets for the selected month
 	useEffect(() => {
 		const load = async () => {
@@ -304,7 +306,7 @@ if (err) {
 
 	return(
 		<main className="dashboard">
-			<div style={{ padding: "0 12px", display: "flex", gap: 12, alignItems: "center" }}>
+			<div style={{ padding: "0 12px", display: "none", gap: 12, alignItems: "center" }}>
                <h3 style={{ margin: 0 }}>Dashboard</h3>
                <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
             </div>

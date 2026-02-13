@@ -52,17 +52,7 @@ function App() {
   const [error, setError] = useState("");
   const [loggedInUserTest, setLoggedInUserTest] = useState(false);
 
-  useEffect(() => {
-    const signin = async () => {
-      const signedInUser = await authService.signIn({
-        username: import.meta.env.VITE_USERNAME,
-        password: import.meta.env.VITE_PASSWORD,
-      });
-      setUser(signedInUser);
-      setUid(signedInUser._id);
-    };
-    signin();
-  }, [setUser]);
+  const handleSetMonth = (input) => setMonth(input);
 
   useEffect(() => {
     const loadDashboardData = async () => {
