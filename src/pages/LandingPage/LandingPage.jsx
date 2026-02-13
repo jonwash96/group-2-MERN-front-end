@@ -23,10 +23,10 @@ export default function LandingPage({ simulateSignInOut }) {
 
 	return(
 		<div id="landing-page-wrapper">
-		<nav class="landing-page">
+		<nav className="landing-page">
 			<div className="wrapper">
 				<div className="left">
-					<p>Spend Sense</p>
+					<p>$pend Sense</p>
 					<span>Documentation</span>
 					<span>Github</span>
 					<span>Info</span>
@@ -41,7 +41,7 @@ export default function LandingPage({ simulateSignInOut }) {
 		<main id="landing-page">
 			<section id="hero">
 				<div className="hero-wrapper">
-					<header class="text-block">
+					<header className="text-block">
 						<h1>Money, money, money, money. Gotta Get That Bread</h1>
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus modi perferendis sequi, cum nisi velit saepe soluta corporis rerum quasi voluptatum iste iure nemo nam atque laborum. Voluptatem, minima ipsum.</p>
 						<button type="button" className="primary">Start Saving</button>
@@ -93,7 +93,7 @@ export default function LandingPage({ simulateSignInOut }) {
 
 		<footer>
 			<div>
-				<h5>Spend Sense</h5>
+				<h5>$pend Sense</h5>
 				Designed & Developed by:<br /><br />
 				<span>Jonathan Washington</span><br />
 				<span>Adam Myers</span><br />

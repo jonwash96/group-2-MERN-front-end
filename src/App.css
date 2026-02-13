@@ -1,10 +1,13 @@
 .flyout-menu {
   & ul {
+    position:absolute;
     display:none;
     background-color: var(--bg);
-    position: absolute;
+    border-radius:6px;
+    overflow:hidden;
+    & li {padding:10px;}
   }
-  &:hover > ul, &:active > ul {display:block;}
+  &:hover > ul, &:active > ul {display:block;cursor:pointer;}
   & li:hover {cursor:pointer;}
 }
 
@@ -12,4 +15,11 @@
   display: flex;
   justify-self: center;
   align-items: center;
+}
+
+a {color: var(--primary);}
+button.type3 {
+  background-color: transparent;
+  border:1px solid var(--tertiary);
+  border-radius: 6px;
 }
