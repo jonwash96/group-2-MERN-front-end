@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import * as authService from '../services/authService';
 
 export default function SignInPage({ setUser }) {

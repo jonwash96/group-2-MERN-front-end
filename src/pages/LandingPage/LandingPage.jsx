@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { useNavigate, Link } from "react-router"
 import './LandingPage.css'
 
 export default function LandingPage({ simulateSignInOut }) {
@@ -10,19 +11,31 @@ export default function LandingPage({ simulateSignInOut }) {
 		{name:'image', description:'', url:'/svg/noimg.svg'},
 	])
 
+	const navigate = useNavigate();
+
+	const goToSignIn = () => {
+		navigate("/sign-in");
+	};
+
+	const goToSignUp = () => {
+		navigate("/sign-up");
+	};
+
 	return(
 		<div id="landing-page-wrapper">
 		<nav className="landing-page">
 			<div className="wrapper">
 				<div className="left">
 					<p>$pend Sense</p>
-					<span>Documentation</span>
-					<span>Github</span>
-					<span>Info</span>
+					
+					<Link to="/docs">Documentation</Link>
+					<a href="https://github.com/jonwash96/group-2-MERN-front-end.git" target="_blank" rel="noreferrer">Github</a>
+					<Link to="/info">Info</Link>
 				</div>
+
 				<div className="right">
-					<button type="button" onClick={()=>simulateSignInOut(true)} className="secondary">Log In</button>
-					<button type="button" onClick={()=>simulateSignInOut(true)} className="primary">Sign Up</button>
+					<button type="button" onClick={goToSignIn} className="secondary">Log In</button>
+					<button type="button" onClick={goToSignUp} className="primary">Sign Up</button>
 				</div>
 			</div>
 		</nav>
@@ -33,8 +46,11 @@ export default function LandingPage({ simulateSignInOut }) {
 					<header className="text-block">
 						<h1>Money, money, money, money. Gotta Get That Bread</h1>
 						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus modi perferendis sequi, cum nisi velit saepe soluta corporis rerum quasi voluptatum iste iure nemo nam atque laborum. Voluptatem, minima ipsum.</p>
-						<button type="button" className="primary">Start Saving</button>
+
+						{/* Made this go to sign up as well */}
+						<button type="button" className="primary" onClick={goToSignUp}>Start Saving</button>
 					</header>
+
 					<div className="image-wrapper">
 						<img src="/svg/noimg.svg" />
 					</div>
@@ -44,13 +60,14 @@ export default function LandingPage({ simulateSignInOut }) {
 			<section id="join">
 				<div className="slider-wrapper">
 					<div className="slider-inner"> 
-						{joinImages.map(image => 
-							<div className="img" key={Math.random()}>
+						{joinImages.map((image, idx) => 
+							<div className="img" key={idx}>
 								<img src={image.url} alt={image.name} />
 							</div>
 						)}
 					</div>
 				</div>
+				
 				<div className="text-block">
 					<h2>Become a member and start managing your money today</h2>
 					<p>Track your spending, create budgets and more.</p>
