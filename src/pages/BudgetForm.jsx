@@ -1,59 +1,71 @@
-import { useState, useEffect } from 'react';
-const API_URL = import.meta.env.VITE_BACK_END_SERVER_URL || "http://localhost:3009";
-const BASE_URL = `${API_URL}/budgets`;
+import { useEffect, useState } from "react";
+import * as budgetsService from "../services/budgetsService";
+
+const CATEGORIES = [
+  "Housing",
+  "Food",
+  "Transport",
+  "Transportation",
+  "Healthcare",
+  "Entertainment",
+  "Utilities",
+  "Shopping",
+  "Personal",
+  "Health",
+  "Education",
+  "Other",
+];
+
+const EMPTY_FORM = {
+  name: "",
+  description: "",
+  category: "",
+  monthlyLimit: "",
+};
 
 export default function BudgetForm({ budget = null, onSuccess, onCancel }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    category: '',
-    monthlyLimit: ''
-  });
-
-const [errors, setErrors] = useState({});
-const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [formData, setFormData] = useState(EMPTY_FORM);
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (budget) {
-      setFormData({
-        name: budget.name || '',
-        description: budget.description || '',
-        category: budget.category || '',
-        monthlyLimit: budget.monthlyLimit || ''
-      });
+    if (!budget) {
+      setFormData(EMPTY_FORM);
+      return;
     }
+
+    setFormData({
+      name: budget.name || "",
+      description: budget.description || "",
+      category: budget.category || "",
+      monthlyLimit: String(budget.monthlyLimit ?? ""),
+    });
   }, [budget]);
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-    if (errors[name]) {
-        setErrors(prev => ({
-          ...prev,
-          [name]: null
-        }));
-      }
-    };
+    if (errors[name] || errors.general) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: null,
+        general: null,
+      }));
+    }
   };
 
   const validate = () => {
     const newErrors = {};
-    
-    if (!formData.name.trim()) {
-        newErrors.name = 'Name is required';
-        }
-    if (!formData.category) {
-        newErrors.category = 'Category is required';
-        }
-    if (!formData.monthlyLimit || parseFloat(formData.monthlyLimit) <= 0) {
-        newErrors.monthlyLimit = 'Monthly limit must be greater than 0';
-        }
-        return newErrors;
+    const monthlyLimit = Number(formData.monthlyLimit);
+
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.category) newErrors.category = "Category is required";
+    if (!Number.isFinite(monthlyLimit) || monthlyLimit <= 0) {
+      newErrors.monthlyLimit = "Monthly limit must be greater than 0";
+    }
+
+    return newErrors;
   };
 
   const handleSubmit = async (e) => {
@@ -63,49 +75,30 @@ const [isSubmitting, setIsSubmitting] = useState(false);
       setErrors(validationErrors);
       return;
     }
-    
+
     setIsSubmitting(true);
+    setErrors({});
 
-try {
-      const url = budget ? `${BASE_URL}/${budget._id}` : BASE_URL;
-      const method = budget ? 'PUT' : 'POST';
+    try {
+      const payload = {
+        name: formData.name.trim(),
+        description: formData.description.trim(),
+        category: formData.category,
+        monthlyLimit: Number(formData.monthlyLimit),
+      };
 
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          ...formData,
-          monthlyLimit: parseFloat(formData.monthlyLimit)
-        })
-      });
+      const savedBudget = budget?._id
+        ? await budgetsService.update({ ...payload, _id: budget._id })
+        : await budgetsService.create(payload);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || data.err || 'Failed to save budget');
-      }
-
-      // Call success callback
       if (onSuccess) {
-        onSuccess(data.data || data);
+        onSuccess(savedBudget?.budget ?? savedBudget?.data ?? savedBudget);
       }
 
-      // Reset form if creating new
-      if (!budget) {
-        setFormData({
-          name: '',
-          description: '',
-          category: '',
-          monthlyLimit: ''
-        });
-      }
-
+      if (!budget) setFormData(EMPTY_FORM);
     } catch (err) {
       console.error("@BudgetForm > handleSubmit()", err);
-      setErrors({ general: err.message });
+      setErrors({ general: err?.message || "Failed to save budget" });
     } finally {
       setIsSubmitting(false);
     }
@@ -114,14 +107,10 @@ try {
   return (
     <form className="budget-form" onSubmit={handleSubmit}>
       <h2 className="form-title">
-        {budget ? 'Edit Budget' : 'Create New Budget'}
+        {budget ? "Edit Budget" : "Create New Budget"}
       </h2>
-      
-      {errors.general && (
-        <div className="alert alert-error">
-          {errors.general}
-        </div>
-      )}
+
+      {errors.general && <div className="alert alert-error">{errors.general}</div>}
 
       <div className="form-group">
         <label htmlFor="name">
@@ -134,7 +123,7 @@ try {
           value={formData.name}
           onChange={handleChange}
           placeholder="e.g., Food Budget"
-          className={errors.name ? 'error' : ''}
+          className={errors.name ? "error" : ""}
         />
         {errors.name && <span className="error-message">{errors.name}</span>}
       </div>
@@ -149,11 +138,13 @@ try {
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className={errors.category ? 'error' : ''}
+            className={errors.category ? "error" : ""}
           >
             <option value="">Select Category</option>
-            {CATEGORIES.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {CATEGORIES.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
           {errors.category && <span className="error-message">{errors.category}</span>}
@@ -172,9 +163,11 @@ try {
             placeholder="0.00"
             step="0.01"
             min="0"
-            className={errors.monthlyLimit ? 'error' : ''}
+            className={errors.monthlyLimit ? "error" : ""}
           />
-          {errors.monthlyLimit && <span className="error-message">{errors.monthlyLimit}</span>}
+          {errors.monthlyLimit && (
+            <span className="error-message">{errors.monthlyLimit}</span>
+          )}
         </div>
       </div>
 
@@ -191,20 +184,23 @@ try {
       </div>
 
       <div className="form-actions">
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           className="btn btn-primary"
           disabled={isSubmitting}
         >
-          {isSubmitting 
-            ? (budget ? 'Updating...' : 'Creating...') 
-            : (budget ? 'Update Budget' : 'Create Budget')
-          }
+          {isSubmitting
+            ? budget
+              ? "Updating..."
+              : "Creating..."
+            : budget
+              ? "Update Budget"
+              : "Create Budget"}
         </button>
 
         {onCancel && (
-          <button 
-            type="button" 
+          <button
+            type="button"
             className="btn btn-secondary"
             onClick={onCancel}
             disabled={isSubmitting}
@@ -215,3 +211,4 @@ try {
       </div>
     </form>
   );
+}

@@ -90,6 +90,39 @@ main.dashboard > section#top {
 				border-radius: 5px;
 			}
 		}
+
+		& .budget-mini-list {
+			margin-top: 10px;
+			display: grid;
+			gap: 8px;
+		}
+
+		& .budget-mini-item {
+			background-color: var(--bgf1);
+			border: 1px solid var(--bgf2);
+			border-radius: 6px;
+			padding: 6px 8px;
+		}
+
+		& .mini-row {
+			display: flex;
+			justify-content: space-between;
+			font-size: 0.8em;
+			color: var(--secondary);
+			margin-bottom: 4px;
+		}
+
+		& .mini-progress {
+			height: 6px;
+			background-color: var(--bgb2);
+			border-radius: 4px;
+			overflow: hidden;
+		}
+
+		& .mini-progress-fill {
+			height: 100%;
+			background-image: linear-gradient(to right, var(--dblue), var(--lblue));
+		}
 	}
 }
 
@@ -253,7 +286,8 @@ main.dashboard > section#bottom {
 					display: inline-flex;
 					align-items: center;
 					cursor: pointer;
-					color: inherit;
+					color: var(--secondary);
+					text-decoration: none;
 				}
 			}
 		}

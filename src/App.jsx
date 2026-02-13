@@ -13,6 +13,7 @@ import NewExpensePage from "./pages/NewExpensePage";
 import EditExpensePage from "./pages/EditExpensePage";
 import ExpenseShowPage from "./pages/ExpenseShowPage/ExpenseShowPage"
 import ProfilePage from "./pages/ProfilePage/ProfilePage"
+import BudgetsPage from "./pages/BudgetsPage";
 
 import * as expenseService from "./services/expenseService";
 import * as authService from "./services/authService";
@@ -152,6 +153,17 @@ function App() {
             <RequireAuth isAuthed={isAuthed}>
               <AppLayout>
                 <ExpensePage />
+              </AppLayout>
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="/budgets"
+          element={
+            <RequireAuth isAuthed={isAuthed}>
+              <AppLayout>
+                <BudgetsPage />
               </AppLayout>
             </RequireAuth>
           }
