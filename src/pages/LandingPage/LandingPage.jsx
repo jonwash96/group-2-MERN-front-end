@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
+import { useNavigate, Link } from "react-router"
 import './LandingPage.css'
 
 export default function LandingPage({ simulateSignInOut }) {
@@ -9,6 +10,16 @@ export default function LandingPage({ simulateSignInOut }) {
 		{name:'image', description:'', url:'/svg/noimg.svg'},
 		{name:'image', description:'', url:'/svg/noimg.svg'},
 	])
+
+	const navigate = useNavigate();
+
+	const goToSignIn = () => {
+		navigate("/sign-in");
+	};
+
+	const goToSignUp = () => {
+		navigate("/sign-up");
+	};
 
 	return(
 		<div id="landing-page-wrapper">

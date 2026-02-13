@@ -2,6 +2,7 @@
   & ul {
     display:none;
     background-color: var(--bg);
+    position: absolute;
   }
   &:hover > ul, &:active > ul {display:block;}
   & li:hover {cursor:pointer;}
