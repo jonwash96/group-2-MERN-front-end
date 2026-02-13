@@ -149,7 +149,7 @@ export default function Dashboard() {
 				const endAngle = currentAngle;
 				
 				// this is how it knows where the color stops are for each slice
-				gradientStops.push(`${slice.color} ${startAngle}deg ${endAngle}deg`);
+				gradientStops.push(`${slice.color} ${startAngle}deg ${endAngle-1}deg`);
 			}
 		});
 		
@@ -376,7 +376,7 @@ if (err) {
             <div id="recurring-expenses" className="card med">
 				<header>
 					<h5 className="title">Recurring Expenses</h5>
-					<Link to="/expenses/report">➕ Add New</Link>
+					<Link to="/expenses/report">See All</Link>
 				</header>
 				<ul id="recent-transactions">
                 {recurringExpenses.map(expense => 
@@ -384,7 +384,7 @@ if (err) {
 						<ImageIcn role="ph" size="24px" options="round" />
 						<div className="text-block">
 							<p>{expense.title}</p>
-							<span>{new Date(expense.date).getDate()} of the month</span>
+							<span>{new Date(expense.date).getDate()._toOrdered()} of the month</span>
 						</div>
 						<div className="right">
 							<span>${money(expense.amount)}</span>

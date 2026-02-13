@@ -267,8 +267,13 @@ main.dashboard > section#bottom {
 				display:flex;
 				flex-direction: column;
 				justify-content: center;
-				align-items: start;
-				& span {font-size: 9pt; font-weight:bold;}
+				margin-right:10px;
+				align-items: end;
+				& span {
+					font-size: 9pt; 
+					font-weight:bold;
+					text-align: right;
+				}
 			}
 		}
 	}
