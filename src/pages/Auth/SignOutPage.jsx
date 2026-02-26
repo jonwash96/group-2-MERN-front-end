@@ -1,14 +1,17 @@
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { signOut } from '../../services/authService'
 import { errToast } from '../../utils/gizmos'
+import { useNavigate } from 'react-router'
+import { UserContext } from "../../contexts/UserContext";
 
 export default function SignOutPage() {
+	const { setUser } = useContext(UserContext);
 	const navigate = useNavigate();
 	useEffect(() => {
 		(async () => {
 			try {
-				console.log("@Handle Signout")
 				await signOut();
+				setUser(null)
 				navigate('/');
 			} catch (err) {
 				errToast()

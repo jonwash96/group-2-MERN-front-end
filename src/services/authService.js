@@ -28,7 +28,7 @@ export async function signIn(formData) {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(formData),
 		});
-
+		
 		const data = await res.json();
 		if (data.err) throw new Error(data.err);
 		if (!data.token) throw new Error("Invalid Response from server. Token not found.");

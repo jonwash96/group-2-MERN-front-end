@@ -1,9 +1,7 @@
-import { useState, useEffect, useContext, useMemo } from 'react'
-import { styled } from 'styled-components'
-import { Link, useNavigate } from 'react-router'
+import { useState, useEffect, useMemo } from 'react'
+import { Link } from 'react-router'
 import '../../utils/gizmos/bancroft-proto'
 import { ImageIcn } from '../../utils/gizmos'
-import { UserContext } from "../../contexts/UserContext";
 import './Dashboard.css'
 import * as data from './data'
 import * as expenseService from "../../services/expenseService"
@@ -436,24 +434,26 @@ if (err) {
 					<h5 className="title">Spending By Category</h5>
 					<Link to="/expenses/report">View Report</Link>
 				</header>
-				<figcaption>
-					{calculateSpendingByCategory().map(({category, color, percentage, amount}) => 
-						percentage > 0 && (
-							<div key={"fig-cap-wrapper-"+category}>
-								<div style={{'--col':color}}>
-									{category} (${money(amount)})
-								</div>
-							</div>
-						)
-					)}
-				</figcaption>
 				<figure>
-					<div className="pie-wrapper">
-						<div 
-							className="pie-slices" 
-							style={{backgroundImage: generatePieGradient()}}
-						></div>
+					<div className="pie-container">
+						<div className="pie-wrapper">
+							<div 
+								className="pie-slices" 
+								style={{backgroundImage: generatePieGradient()}}
+							></div>
+						</div>
 					</div>
+					<figcaption>
+						{calculateSpendingByCategory().map(({category, color, percentage, amount}) => 
+							percentage > 0 && (
+								<div key={"fig-cap-wrapper-"+category}>
+									<div style={{'--col':color}}>
+										{category} (${money(amount)})
+									</div>
+								</div>
+							)
+						)}
+					</figcaption>
 				</figure>
             </div>
 		</section>

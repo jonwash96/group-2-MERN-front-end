@@ -2,6 +2,7 @@
 .page-info {margin:0;padding:0;color:grey;}
 
 main.dashboard {
+	z-index: 0;
 	background-color: var(--bgb2);
     grid-area:main;
 	height:calc(100vh - 50px);
@@ -330,15 +331,20 @@ main.dashboard > section#bottom {
 
 figcaption {
     display:flex;
+	flex-wrap: wrap;
 	gap:.5em;
+	flex-direction: column;
 	justify-content: center;
+	align-items: space-between;
+	height:100%;
 
-	& div {width:max-content;display:inline-block;color: var(--col);}
+	& div {width:max-content;display:inline-block;}
 	& div > div::before {
 		content:"";
 		display:inline-block;
 		width:1em;
-		height:100%;
+		margin-right: .5em;
+		height:1em;
 		background-color: var(--col);
 	}
 }
@@ -347,6 +353,12 @@ figure {
 	height:75%;
 	display: flex;
 	align-items:center;
+
+	& .pie-container {
+		display:block;
+		width: 100%;
+		height: 100%;
+	}
 
 	& .pie-wrapper {
 		display: block;

@@ -31,6 +31,8 @@ export default function LandingPage({ isAuthed }) {
 		navigate("/sign-out");
 	};
 
+	console.log("@LandingPage > isAuthed", user?._id)
+
 	return(
 		<div id="landing-page-wrapper">
 		<nav className="landing-page">

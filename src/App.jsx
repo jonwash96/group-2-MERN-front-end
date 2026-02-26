@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext, useMemo } from "react";
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate, redirect } from "react-router";
 import "./App.css";
 
 import { UserContext } from "./contexts/UserContext";
 import Headbar from "./components/Headbar/Headbar";
-import Dashboard from "./components/Dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUpPage from "./pages/Auth/SignUpPage";
 import SignInPage from "./pages/Auth/SignInPage";
@@ -85,6 +85,8 @@ function App() {
   );
 
   const isAuthed = user?._id;
+  console.log("@App > isAuthed", user?._id)
+  if (!isAuthed) {redirect('/')}
 
   return (
     <>
