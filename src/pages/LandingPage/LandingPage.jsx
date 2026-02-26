@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router"
 import { UserContext } from "../../contexts/UserContext";
 import './LandingPage.css'
 
-export default function LandingPage({ isAuthed, signout }) {
+export default function LandingPage({ isAuthed }) {
 	const { user, setUser } = useContext(UserContext);
 	const [joinImages, setJoinImages] = useState([
 		{name:'image', description:'', url:'/landing-page/img1.jpg'},
@@ -16,12 +16,9 @@ export default function LandingPage({ isAuthed, signout }) {
 
 	const navigate = useNavigate();
 
-	useEffect(() => signout && setUser(null), [signout]);
-
 	const goToSignIn = () => {
 		navigate("/sign-in");
 	};
-	console.log("@LandingPage", isAuthed)
 
 	const goToSignUp = () => {
 		navigate("/sign-up");
@@ -47,18 +44,18 @@ export default function LandingPage({ isAuthed, signout }) {
 				</div>
 
 				{isAuthed 
-				? (<>
-					<div className="right">
-						<button type="button" onClick={goToSignDashboard} className="primary">Dashboard</button>
-						<button type="button" onClick={goToSignOut} className="secondary">Sign Out</button>
-					</div> 
-				</>) : (<>
-					<div className="right">
-						<button type="button" onClick={goToSignIn} className="secondary">Log In</button>
-						<button type="button" onClick={goToSignUp} className="primary">Sign Up</button>
-					</div> 
-				</>)
-			}
+					? (<>
+						<div className="right">
+							<button type="button" onClick={goToSignDashboard} className="primary">Dashboard</button>
+							<button type="button" onClick={goToSignOut} className="secondary">Sign Out</button>
+						</div> 
+					</>) : (<>
+						<div className="right">
+							<button type="button" onClick={goToSignIn} className="secondary">Log In</button>
+							<button type="button" onClick={goToSignUp} className="primary">Sign Up</button>
+						</div> 
+					</>)
+				}
 			</div>
 		</nav>
 

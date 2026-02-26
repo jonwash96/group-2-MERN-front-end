@@ -16,7 +16,7 @@ import ProfilePage from "./pages/ProfilePage/ProfilePage"
 import BudgetsPage from "./pages/BudgetsPage";
 
 import * as expenseService from "./services/expenseService";
-import * as authService from "./services/authService";
+import SignOutPage from "./pages/Auth/SignOutPage";
 import "./utils/gizmos/bancroft-proto";
 
 function getCurrentMonthValue(date = new Date()) {
@@ -108,7 +108,7 @@ function App() {
         {/* Protected */}
         <Route
           path="/sign-out"
-          element={<LandingPage signout={true} />}
+          element={<SignOutPage />}
         />
 
         <Route
