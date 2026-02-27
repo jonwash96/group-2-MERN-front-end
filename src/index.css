@@ -22,9 +22,9 @@ body {margin:0;}
     --tertiary: #888;
     --tertiary-op: #777;
     --brand-key: #DDF734;
-    --brand-base: #344050;
     --brand-base-slight: #bCe1Ff;
     --brand-base-light: #86A6CF;
+    --brand-base: #344050;
     --brand-base-dark: #2E3947;
     --brand-base-sdark: #0E1927;
     --brand-key-lgb: linear-gradient(to left, var(--brand-key), var(--brand-base));

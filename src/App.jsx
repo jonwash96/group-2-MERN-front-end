@@ -85,7 +85,6 @@ function App() {
   );
 
   const isAuthed = user?._id;
-  console.log("@App > isAuthed", user?._id)
   if (!isAuthed) {redirect('/')}
 
   return (
