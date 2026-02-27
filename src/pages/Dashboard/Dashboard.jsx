@@ -392,23 +392,31 @@ if (err) {
                 	<h5 className="title">Add New Expense</h5>
 				</header>
                	<form onSubmit={handleCreateExpense}>
-					<label htmlFor="AE-title">Title</label>
-					<input id="AE-title" type="text" name="title" onChange={handleChange} value={input.title} required />
-					<label htmlFor="AE-amount">Amount</label>
-					<input id="AE-amount" type="number" name="amount" onChange={handleChange} value={input.amount} required />
-					<label htmlFor="AE-category">Category</label>
-					<select id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required>
+					<div className="input-block">
+						<label htmlFor="AE-title">Title</label>
+						<input id="AE-title" type="text" name="title" onChange={handleChange} value={input.title} required />
+					</div>
+					<div className="input-block">
+						<label htmlFor="AE-amount">Amount</label>
+						<input id="AE-amount" type="number" name="amount" onChange={handleChange} value={input.amount} required />
+					</div>
+					<div className="input-block">
+						<label htmlFor="AE-category">Category</label>
+						<select id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required>
 						<option value="">--Select a Category</option>
-						{data.expenseCategories.map(([name]) =>
-							<option key={name} value={name}>{name}</option>
-						)}
-					</select>
-					<label htmlFor="AE-date">Date</label>
-					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
+							{data.expenseCategories.map(([name]) =>
+								<option key={name} value={name}>{name}</option>
+							)}
+						</select>
+					</div>
+					<div className="input-block">
+						<label htmlFor="AE-date">Date</label>
+						<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
+					</div>
 					
 					<div className="recurring-toggle-block">
 						<div className="recurring-label-group">
-							<label htmlFor="AE-recurring">Monthly Recurring Payment</label>
+							<label htmlFor="AE-recurring">Monthly Recurring</label>
 							<span className="recurring-subtext">
 								{input.isRecurring ? 'This expense will repeat monthly' : 'One-time payment'}
 							</span>
@@ -435,14 +443,6 @@ if (err) {
 					<Link to="/expenses/report">View Report</Link>
 				</header>
 				<figure>
-					<div className="pie-container">
-						<div className="pie-wrapper">
-							<div 
-								className="pie-slices" 
-								style={{backgroundImage: generatePieGradient()}}
-							></div>
-						</div>
-					</div>
 					<figcaption>
 						{calculateSpendingByCategory().map(({category, color, percentage, amount}) => 
 							percentage > 0 && (
@@ -454,6 +454,14 @@ if (err) {
 							)
 						)}
 					</figcaption>
+					<div className="pie-container">
+						<div className="pie-wrapper">
+							<div 
+								className="pie-slices" 
+								style={{backgroundImage: generatePieGradient()}}
+							></div>
+						</div>
+					</div>
 				</figure>
             </div>
 		</section>
