@@ -4,7 +4,7 @@ import { UserContext } from "../../contexts/UserContext";
 import './LandingPage.css'
 
 export default function LandingPage({ isAuthed }) {
-	const { user, setUser } = useContext(UserContext);
+	const { user } = useContext(UserContext);
 	const [joinImages, setJoinImages] = useState([
 		{name:'image', description:'', url:'/landing-page/img1.jpg'},
 		{name:'image', description:'', url:'/landing-page/img2.jpg'},
@@ -30,8 +30,6 @@ export default function LandingPage({ isAuthed }) {
 	const goToSignOut = () => {
 		navigate("/sign-out");
 	};
-
-	console.log("@LandingPage > isAuthed", user?._id)
 
 	return(
 		<div id="landing-page-wrapper">

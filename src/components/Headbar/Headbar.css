@@ -190,9 +190,16 @@ div#dashboard-date-menu {
     color: var(--brand-key);
   }
 
-  & ul:hover {cursor:pointer;}
+  &:hover::before {
+    content:"";
+    cursor:pointer;
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    transform: translate(-80%, 0);
+  }
+
   & ul {
-    /* display: block; */
     right: 1em;
     width: 360px;
     border: .5px solid var(--bgf1);
@@ -225,5 +232,7 @@ div#dashboard-date-menu {
       background-color: var(--brand-base-dark);
       cursor: pointer;
     }
+
+    &.show-notif {display:none;}
   }
 }

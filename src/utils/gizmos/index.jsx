@@ -37,7 +37,6 @@ export function ImageIcn(props) {
 		}; break;
 
 		case 'notifications': {
-			// src = '/svg/notification-icon.svg';
 			svg = () => NotificationIcon(size || '25px');
 			if (props.data==0) data = null;
 		}; break;

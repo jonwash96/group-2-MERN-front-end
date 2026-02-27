@@ -4,7 +4,7 @@ import * as authService from '../../services/authService';
 import { UserContext } from "../../contexts/UserContext";
 import './Auth.css'
 
-export default function SignInPage({ simulateSignInOut }) {
+export default function SignInPage() {
   const navigate = useNavigate();
   const { setUser } = useContext(UserContext);
   const [username, setUsername] = useState('');
@@ -13,8 +13,6 @@ export default function SignInPage({ simulateSignInOut }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-
     try {
       const user = await authService.signIn({ username, password });
       setUser(user);
@@ -22,7 +20,7 @@ export default function SignInPage({ simulateSignInOut }) {
     } catch (err) {
       setError(err.message || 'Sign in failed');
     }
-  };
+  }
 
   return (
     <main id="auth">

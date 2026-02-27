@@ -14,8 +14,9 @@ export async function signUp(formData) {
 		if (!data.token) throw new Error("Invalid response from the server. Token not found.");
 		
 		localStorage.setItem('token', data.token);
+		sessionStorage.setItem('userData', JSON.stringify(data.user));
 
-		return data.user;
+		return data.user
 	} catch (err) {
 		throw new Error(err?.message || String(err));
 	}
@@ -34,6 +35,8 @@ export async function signIn(formData) {
 		if (!data.token) throw new Error("Invalid Response from server. Token not found.");
 
 		localStorage.setItem("token", data.token);
+		sessionStorage.setItem('userData', JSON.stringify(data.user));
+
 		return data.user
 	} catch (err) {
 		throw new Error(err);
@@ -44,10 +47,12 @@ export async function signOut() {
 	try {
 		const res = await fetch(BASE_URL+'/sign-out', { method: "POST" });
 		localStorage.removeItem('token');
-		if (localStorage.getItem('token')) throw new Error("Connection to the server Failed. Signing Out Locally.");
+		sessionStorage.removeItem('userData');
+		if (localStorage.getItem('token') || sessionStorage.getItem('userData')) throw new Error("Connection to the server Failed. Signing Out Locally.");
 		return res.status
 	} catch (err) {
 		localStorage.removeItem('token');
+		sessionStorage.removeItem('userData');
 		if (localStorage.getItem('token')) throw new Error("Sign Out Failed! Please try again later.");
 	}
 };

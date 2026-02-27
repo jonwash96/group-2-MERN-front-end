@@ -41,8 +41,6 @@ function normalizeBudgets(payload) {
 }
 
 export default function Dashboard() {
-	// const navigate = useNavigate();
-    // const { user } = useContext(UserContext);
 	const [month, setMonth] = useState(() => getCurrentMonthValue());
     const [input, setInput] = useState({
 		title: "",
@@ -440,7 +438,7 @@ if (err) {
             <div id="spending-by-category" className="card large right">
 				<header>
 					<h5 className="title">Spending By Category</h5>
-					<Link to="/expenses/report">View Report</Link>
+					<Link to="/expenses">View Report</Link>
 				</header>
 				<figure>
 					<figcaption>
@@ -470,7 +468,7 @@ if (err) {
             <div id="recent-transactions" className="card med">
 				<header>
 					<h5 className="title">Recent Transactions</h5>
-					<Link to="/expenses/report">See All</Link>
+					<Link to="/expenses">See All</Link>
 				</header>
 				<ul id="recent-transactions">
 					<li key="header">
@@ -509,7 +507,7 @@ if (err) {
             <div id="recurring-expenses" className="card med">
 				<header>
 					<h5 className="title">Recurring Expenses</h5>
-					<Link to="/expenses/report">See All</Link>
+					<Link to="/expenses">See All</Link>
 				</header>
 				<ul id="recent-transactions">
                 {recurringExpenses.map(expense => 

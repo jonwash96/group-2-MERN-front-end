@@ -5,13 +5,14 @@ import { useNavigate } from 'react-router'
 import { UserContext } from "../../contexts/UserContext";
 
 export default function SignOutPage() {
-	const { setUser } = useContext(UserContext);
+	const { setUser, setAuthToken } = useContext(UserContext);
 	const navigate = useNavigate();
 	useEffect(() => {
 		(async () => {
 			try {
 				await signOut();
 				setUser(null)
+				setAuthToken(null)
 				navigate('/');
 			} catch (err) {
 				errToast()
