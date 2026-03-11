@@ -1,18 +1,17 @@
-import { useState, useEffect, useContext } from 'react'
+import { useContext } from 'react'
 import { useNavigate, Link } from "react-router"
 import { UserContext } from "../../contexts/UserContext";
 import './LandingPage.css'
 
 export default function LandingPage({ isAuthed }) {
-	const { user } = useContext(UserContext);
-	const [joinImages, setJoinImages] = useState([
+	const joinImages = [
 		{name:'image', description:'', url:'/landing-page/img1.jpg'},
 		{name:'image', description:'', url:'/landing-page/img2.jpg'},
 		{name:'image', description:'', url:'/landing-page/img3.jpg'},
 		{name:'image', description:'', url:'/landing-page/img4.jpg'},
 		{name:'image', description:'', url:'/landing-page/img5.jpg'},
 		{name:'image', description:'', url:'/landing-page/img6.jpg'},
-	])
+	]
 
 	const navigate = useNavigate();
 
@@ -67,7 +66,6 @@ export default function LandingPage({ isAuthed }) {
 						<h1>Money, money, money, money. Gotta Get That Bread</h1>
 						<p>Designed to help users manage their personal finances with little to zero effort. Track your expenses, set budgets, manage recurring payments and visualize your spending habits all in an intutitive dashboard.</p>
 
-						{/* Made this go to sign up as well */}
 						<button type="button" className="primary" onClick={goToSignUp}>Start Saving</button>
 					</header>
 
