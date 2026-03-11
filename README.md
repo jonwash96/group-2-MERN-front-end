@@ -4,6 +4,7 @@
 ##  
 [Launch App](https://spend-sense-puce-eta.vercel.app/)
 **Track your spending, manage budgets, and take control of your finances**
+[View the Back end API](https://www.github.com/jonwash96/group-2-MERN-back-end)
 
 ---
 
