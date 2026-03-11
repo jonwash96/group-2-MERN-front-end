@@ -38,7 +38,7 @@ export default function LandingPage({ isAuthed }) {
 				<div className="left">
 					<p>$pend Sense</p>
 					
-					<Link to="/docs">Documentation</Link>
+					<a href="https://github.com/jonwash96/group-2-MERN-back-end.git" target="_blank">Documentation</a>
 					<a href="https://github.com/jonwash96/group-2-MERN-front-end.git" target="_blank" rel="noreferrer">Github</a>
 					<Link to="/info">Info</Link>
 				</div>
@@ -65,7 +65,7 @@ export default function LandingPage({ isAuthed }) {
 					<header className="text-block">
 				<img src="/logosolo.png" width="200px" />
 						<h1>Money, money, money, money. Gotta Get That Bread</h1>
-						<p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Natus modi perferendis sequi, cum nisi velit saepe soluta corporis rerum quasi voluptatum iste iure nemo nam atque laborum. Voluptatem, minima ipsum.</p>
+						<p>Designed to help users manage their personal finances with little to zero effort. Track your expenses, set budgets, manage recurring payments and visualize your spending habits all in an intutitive dashboard.</p>
 
 						{/* Made this go to sign up as well */}
 						<button type="button" className="primary" onClick={goToSignUp}>Start Saving</button>
@@ -100,7 +100,7 @@ export default function LandingPage({ isAuthed }) {
 				</div>
 				<div className="text-block">
 					<h2>Track Your Expenses</h2>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo quae, distinctio.</p>
+					<p>Quickly log expenses with categories and Recent Transactions.</p>
 					<button type="button" className="tertiary">Learn More</button>
 				</div>
 			</section>
@@ -111,7 +111,7 @@ export default function LandingPage({ isAuthed }) {
 				</div>
 				<div className="text-block">
 					<h2>Create Budgets</h2>
-					<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo quae, distinctio.</p>
+					<p>Set monthly limits and track progress in real-time.</p>
 					<button type="button" className="tertiary">Learn More</button>
 				</div>
 			</section>

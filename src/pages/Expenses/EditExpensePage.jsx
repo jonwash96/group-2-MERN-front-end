@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams, Link } from 'react-router';
-import * as expenseService from '../services/expenseService';
+import * as expenseService from '../../services/expenseService';
+import './Expenses.css';
 
 export default function EditExpensePage() {
   const navigate = useNavigate();
@@ -63,7 +64,7 @@ export default function EditExpensePage() {
       
       {error && <p style={{ color: 'red' }}>{error}</p>}
       
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id="expense-form">
         <div>
           <label>Amount ($):</label>
           <input 

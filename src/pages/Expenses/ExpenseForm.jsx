@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import './ExpenseForm.css';
+import './Expenses.css';
 
 const CATEGORIES = [
   'Housing',
@@ -56,7 +56,7 @@ export default function ExpenseForm({ expense = null, onSuccess, onCancel }) {
       ...prev,
       [name]: value
     }));
-    if (errors[name]) { //! Is this how we want this to work? I think this would clear the input if there's an error before submit. I'd think we'd just want to change the border color and leave what's there to be edited
+    if (errors[name]) { 
       setErrors(prev => ({
         ...prev,
         [name]: ''
@@ -146,7 +146,7 @@ export default function ExpenseForm({ expense = null, onSuccess, onCancel }) {
   };
 
   return (
-    <form className="expense-form" onSubmit={handleSubmit}>
+    <form id="expense-form" onSubmit={handleSubmit}>
       <h2 className="form-title">
         {expense ? 'Edit Expense' : 'Add New Expense'}
       </h2>

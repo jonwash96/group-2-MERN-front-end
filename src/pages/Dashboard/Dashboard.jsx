@@ -295,17 +295,11 @@ if (err) {
 
 	const handleToggleRecurring = () => {setInput({ ...input, isRecurring: !input.isRecurring })};
 	const handleToggleExpenseStatus = (expenseId) => {
-		// This would need backend API to toggle status
 		console.log("Toggle expense status:", expenseId);
 	};
 
 	return(
 		<main className="dashboard">
-			<div style={{ padding: "0 12px", display: "none", gap: 12, alignItems: "center" }}>
-               <h3 style={{ margin: 0 }}>Dashboard</h3>
-               <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
-            </div>
-
         <section id="top">
             <div id="total-spent" className="card med">
 				<header>

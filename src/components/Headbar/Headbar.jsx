@@ -30,7 +30,7 @@ const month = 2;
     return(
         <section id="headbar">
             <div className="left">
-                <Link to="/dashboard" id="logotype">$pend Sense</Link>
+                <Link to="/" id="logotype">$pend Sense</Link>
             </div>
 
             <div className="center">
@@ -64,6 +64,7 @@ const month = 2;
                         <ImageIcn role="profile-photo" size="small" />
                         <span> ▾</span>
                         <ul>
+                            <li><Link to="/dashboard">Dashboard</Link></li>
                             <li><Link to="/profile">Profile</Link></li>
                             <li><Link to="/expenses">Expenses</Link></li>
                             <li><Link to="/budgets">Budgets</Link></li>

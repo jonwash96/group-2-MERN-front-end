@@ -9,12 +9,12 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUpPage from "./pages/Auth/SignUpPage";
 import SignInPage from "./pages/Auth/SignInPage";
 import SignOutPage from "./pages/Auth/SignOutPage";
-import ExpensePage from "./pages/ExpensePage";
-import NewExpensePage from "./pages/NewExpensePage";
-import EditExpensePage from "./pages/EditExpensePage";
-import ExpenseShowPage from "./pages/ExpenseShowPage/ExpenseShowPage"
+import ExpensePage from "./pages/Expenses/ExpensePage";
+import NewExpensePage from "./pages/Expenses/NewExpensePage";
+import EditExpensePage from "./pages/Expenses/EditExpensePage";
+import ExpenseShowPage from "./pages/Expenses/ExpenseShowPage"
 import ProfilePage from "./pages/ProfilePage/ProfilePage"
-import BudgetsPage from "./pages/BudgetsPage";
+import BudgetsPage from "./pages/Budgets/BudgetsPage";
 import * as expenseService from "./services/expenseService";
 import "./utils/gizmos/bancroft-proto";
 

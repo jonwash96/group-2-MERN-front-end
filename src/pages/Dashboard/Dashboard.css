@@ -259,7 +259,7 @@ main.dashboard > section#middle {
 	}
 }
 
-@media screen and (max-height: 1000px) {
+@media screen and (max-height: 900px) and  (min-width: 1000px) {
 	main.dashboard > section#middle #new-expense form div.input-block {
 		display: grid;
 		grid-template: auto / 80px auto;
