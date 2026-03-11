@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import BudgetForm from "./BudgetForm/BudgetForm";
-import * as budgetsService from "../services/budgetsService";
+import BudgetForm from "./BudgetForm";
+import * as budgetsService from "../../services/budgetsService";
 
 function normalizeBudgets(payload) {
   if (Array.isArray(payload)) return payload;
@@ -148,11 +148,14 @@ export default function BudgetsPage() {
                         setSelectedBudget(budget);
                         setShowCreateForm(false);
                       }}
-                    >
-                      Edit
+                      className="type3"
+                    >Edit
                     </button>
-                    <button type="button" onClick={() => handleDelete(budget._id)}>
-                      Delete
+                    <button 
+                      type="button" 
+                      onClick={() => handleDelete(budget._id)}
+                      className="type3"
+                    >Delete
                     </button>
                   </td>
                 </tr>

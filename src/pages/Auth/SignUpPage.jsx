@@ -5,7 +5,7 @@ import * as authService from '../../services/authService';
 import './Auth.css'
 
 export default function SignUpPage() {
-  const { user, setUser } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

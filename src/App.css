@@ -1,5 +1,6 @@
 .flyout-menu {
   & ul {
+    z-index: 50;
     position:absolute;
     display:none;
     background-color: var(--bg);

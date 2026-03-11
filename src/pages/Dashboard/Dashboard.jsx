@@ -1,9 +1,7 @@
-import { useState, useEffect, useContext, useMemo } from 'react'
-import { styled } from 'styled-components'
-import { Link, useNavigate } from 'react-router'
+import { useState, useEffect, useMemo } from 'react'
+import { Link } from 'react-router'
 import '../../utils/gizmos/bancroft-proto'
 import { ImageIcn } from '../../utils/gizmos'
-import { UserContext } from "../../contexts/UserContext";
 import './Dashboard.css'
 import * as data from './data'
 import * as expenseService from "../../services/expenseService"
@@ -43,8 +41,6 @@ function normalizeBudgets(payload) {
 }
 
 export default function Dashboard() {
-	// const navigate = useNavigate();
-    // const { user } = useContext(UserContext);
 	const [month, setMonth] = useState(() => getCurrentMonthValue());
     const [input, setInput] = useState({
 		title: "",
@@ -299,17 +295,11 @@ if (err) {
 
 	const handleToggleRecurring = () => {setInput({ ...input, isRecurring: !input.isRecurring })};
 	const handleToggleExpenseStatus = (expenseId) => {
-		// This would need backend API to toggle status
 		console.log("Toggle expense status:", expenseId);
 	};
 
 	return(
 		<main className="dashboard">
-			<div style={{ padding: "0 12px", display: "none", gap: 12, alignItems: "center" }}>
-               <h3 style={{ margin: 0 }}>Dashboard</h3>
-               <input type="month" value={month} onChange={(e) => setMonth(e.target.value)} />
-            </div>
-
         <section id="top">
             <div id="total-spent" className="card med">
 				<header>
@@ -394,23 +384,31 @@ if (err) {
                 	<h5 className="title">Add New Expense</h5>
 				</header>
                	<form onSubmit={handleCreateExpense}>
-					<label htmlFor="AE-title">Title</label>
-					<input id="AE-title" type="text" name="title" onChange={handleChange} value={input.title} required />
-					<label htmlFor="AE-amount">Amount</label>
-					<input id="AE-amount" type="number" name="amount" onChange={handleChange} value={input.amount} required />
-					<label htmlFor="AE-category">Category</label>
-					<select id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required>
+					<div className="input-block">
+						<label htmlFor="AE-title">Title</label>
+						<input id="AE-title" type="text" name="title" onChange={handleChange} value={input.title} required />
+					</div>
+					<div className="input-block">
+						<label htmlFor="AE-amount">Amount</label>
+						<input id="AE-amount" type="number" name="amount" onChange={handleChange} value={input.amount} required />
+					</div>
+					<div className="input-block">
+						<label htmlFor="AE-category">Category</label>
+						<select id="AE-category" type="number" name="category" onChange={handleChange} value={input.category} required>
 						<option value="">--Select a Category</option>
-						{data.expenseCategories.map(([name]) =>
-							<option key={name} value={name}>{name}</option>
-						)}
-					</select>
-					<label htmlFor="AE-date">Date</label>
-					<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
+							{data.expenseCategories.map(([name]) =>
+								<option key={name} value={name}>{name}</option>
+							)}
+						</select>
+					</div>
+					<div className="input-block">
+						<label htmlFor="AE-date">Date</label>
+						<input id="AE-date" type="date" name="date" onChange={handleChange} value={input.date} required />
+					</div>
 					
 					<div className="recurring-toggle-block">
 						<div className="recurring-label-group">
-							<label htmlFor="AE-recurring">Monthly Recurring Payment</label>
+							<label htmlFor="AE-recurring">Monthly Recurring</label>
 							<span className="recurring-subtext">
 								{input.isRecurring ? 'This expense will repeat monthly' : 'One-time payment'}
 							</span>
@@ -434,25 +432,27 @@ if (err) {
             <div id="spending-by-category" className="card large right">
 				<header>
 					<h5 className="title">Spending By Category</h5>
-					<Link to="/expenses/report">View Report</Link>
+					<Link to="/expenses">View Report</Link>
 				</header>
-				<figcaption>
-					{calculateSpendingByCategory().map(({category, color, percentage, amount}) => 
-						percentage > 0 && (
-							<div key={"fig-cap-wrapper-"+category}>
-								<div style={{'--col':color}}>
-									{category} (${money(amount)})
-								</div>
-							</div>
-						)
-					)}
-				</figcaption>
 				<figure>
-					<div className="pie-wrapper">
-						<div 
-							className="pie-slices" 
-							style={{backgroundImage: generatePieGradient()}}
-						></div>
+					<figcaption>
+						{calculateSpendingByCategory().map(({category, color, percentage, amount}) => 
+							percentage > 0 && (
+								<div key={"fig-cap-wrapper-"+category}>
+									<div style={{'--col':color}}>
+										{category} (${money(amount)})
+									</div>
+								</div>
+							)
+						)}
+					</figcaption>
+					<div className="pie-container">
+						<div className="pie-wrapper">
+							<div 
+								className="pie-slices" 
+								style={{backgroundImage: generatePieGradient()}}
+							></div>
+						</div>
 					</div>
 				</figure>
             </div>
@@ -462,7 +462,7 @@ if (err) {
             <div id="recent-transactions" className="card med">
 				<header>
 					<h5 className="title">Recent Transactions</h5>
-					<Link to="/expenses/report">See All</Link>
+					<Link to="/expenses">See All</Link>
 				</header>
 				<ul id="recent-transactions">
 					<li key="header">
@@ -501,7 +501,7 @@ if (err) {
             <div id="recurring-expenses" className="card med">
 				<header>
 					<h5 className="title">Recurring Expenses</h5>
-					<Link to="/expenses/report">See All</Link>
+					<Link to="/expenses">See All</Link>
 				</header>
 				<ul id="recent-transactions">
                 {recurringExpenses.map(expense => 

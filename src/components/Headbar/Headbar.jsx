@@ -14,6 +14,8 @@ export default function Headbar() {
     const [input, setInput] = useState({});
     const [selectedNotif, setSelectedNotif] = useState(null);
 
+    useEffect(() => console.log("@Headbar. selected Notif", selectedNotif),[selectedNotif])
+
     const handleChange = (e) => {setInput({ ...input, [e.target.name]:e.target.value })};
     const handleSearch = () => {console.log("@Headbar > handleSearch", input.search)};
 
@@ -28,7 +30,7 @@ const month = 2;
     return(
         <section id="headbar">
             <div className="left">
-                <Link to="/dashboard" id="logotype">$pend Sense</Link>
+                <Link to="/" id="logotype">$pend Sense</Link>
             </div>
 
             <div className="center">
@@ -62,6 +64,7 @@ const month = 2;
                         <ImageIcn role="profile-photo" size="small" />
                         <span> ▾</span>
                         <ul>
+                            <li><Link to="/dashboard">Dashboard</Link></li>
                             <li><Link to="/profile">Profile</Link></li>
                             <li><Link to="/expenses">Expenses</Link></li>
                             <li><Link to="/budgets">Budgets</Link></li>
@@ -71,9 +74,9 @@ const month = 2;
 
                     <div id="notification-menu" className="flyout-menu">
                         <ImageIcn role="notifications" data={user.notifications?.length} size="25px" />
-                        <ul> {/* ⏬ Done this way so that they can transition between show/hide */}
+                        <ul>
                             <NotificationsList 
-                                className={selectedNotif ? "show-notif" : "show-notif-list"} 
+                                useClass={selectedNotif ? "show-notif" : "show-notif-list"} 
                                 props={{user, setSelectedNotif, markAsRead}} />
                             <ShowNotification 
                                 className={selectedNotif ? "show-notif" : "show-notif-list"} 
@@ -92,8 +95,8 @@ const month = 2;
 }
 
 function NotificationsList({props}) {
-    const {user, setSelectedNotif, markAsRead} = props;
-    const handleSelect = (notif) => {
+    const {user, setSelectedNotif, markAsRead } = props;
+    const handleSelect = (notif) => { return null;
         setSelectedNotif(notif._id);
         if (notif.status==='unread') {
             new Promise((resolve,reject) => {
@@ -104,18 +107,18 @@ function NotificationsList({props}) {
         }
     };
     return(
-        <ul>
+        <>
             <h6>Notifications</h6>
             {(user.notifications || []).map(notif => 
-                <li key={notif._id} onClick={()=>handleSelect(notif._id)}>
+                <li key={notif._id} onClick={()=>handleSelect(notif)}>
                     <header>
-                        <h5>{notif.title}</h5>
                         <span>{notif.created_at?._epochTo('recent')}</span>
+                        <h5>{notif.title}</h5>
                     </header>
                     <span title={notif.description || ""}>{(notif.description || "")._ellipses(120)}</span>
                 </li>
             )}
-        </ul>
+        </>
     )
 }
 

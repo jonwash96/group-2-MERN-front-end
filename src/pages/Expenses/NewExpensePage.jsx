@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router';
-import * as expenseService from '../services/expenseService';
+import * as expenseService from '../../services/expenseService';
 
 export default function NewExpensePage() {
   const navigate = useNavigate();
+  const [title, setTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('Other');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -20,6 +21,7 @@ export default function NewExpensePage() {
     
     try {
       await expenseService.create({
+        title,
         amount: parseFloat(amount),
         category,
         date,
@@ -39,7 +41,16 @@ export default function NewExpensePage() {
       
       {error && <p style={{ color: 'red' }}>{error}</p>}
       
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id="expense-form">
+        <div>
+          <label>Title:</label>
+          <input 
+            type="text" 
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label>Amount ($):</label>
           <input 

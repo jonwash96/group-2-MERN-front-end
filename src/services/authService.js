@@ -13,12 +13,11 @@ export async function signUp(formData) {
 		if (data.err) throw new Error(data.err);
 		if (!data.token) throw new Error("Invalid response from the server. Token not found.");
 		
-		// fix: use data.token (token wasn't defined before)
 		localStorage.setItem('token', data.token);
+		sessionStorage.setItem('userData', JSON.stringify(data.user));
 
-		return data.user; // kept it consistent with signIn by returning the user object
+		return data.user
 	} catch (err) {
-		// err might already be an Error
 		throw new Error(err?.message || String(err));
 	}
 };
@@ -30,21 +29,30 @@ export async function signIn(formData) {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(formData),
 		});
-
+		
 		const data = await res.json();
 		if (data.err) throw new Error(data.err);
 		if (!data.token) throw new Error("Invalid Response from server. Token not found.");
 
-		console.log("@signin service", data);
 		localStorage.setItem("token", data.token);
-		// return JSON.parse(atob(data.token.split(".")[1])).payload;
+		sessionStorage.setItem('userData', JSON.stringify(data.user));
+
 		return data.user
 	} catch (err) {
 		throw new Error(err);
 	}
 };
 
-// added a signOut helper
-export function signOut() {
-	localStorage.removeItem("token");
+export async function signOut() {
+	try {
+		const res = await fetch(BASE_URL+'/sign-out', { method: "POST" });
+		localStorage.removeItem('token');
+		sessionStorage.removeItem('userData');
+		if (localStorage.getItem('token') || sessionStorage.getItem('userData')) throw new Error("Connection to the server Failed. Signing Out Locally.");
+		return res.status
+	} catch (err) {
+		localStorage.removeItem('token');
+		sessionStorage.removeItem('userData');
+		if (localStorage.getItem('token')) throw new Error("Sign Out Failed! Please try again later.");
+	}
 };

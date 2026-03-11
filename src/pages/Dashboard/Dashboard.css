@@ -1,38 +1,34 @@
-.page-instruction {margin: 0;}
-.page-info {margin:0;padding:0;color:grey;}
-
 main.dashboard {
+	z-index: 0;
 	background-color: var(--bgb2);
-    grid-area:main;
-	height:calc(100vh - 50px);
-	overflow:hidden;
+    grid-area: main;
+	height: calc(100vh - 50px);
+	overflow: hidden;
 
-    display:grid;
+    display: grid;
     grid-template: 
 		"top" calc(33% /2)
 		"middle" calc((66% + (33% /2)) /2)
 		"bottom" calc((66% + (33% /2)) /2) / 100%;
-	/* & * {border: 1px solid grey;} */
-
-    & section#top {grid-area:top;}
-    & section#middle {grid-area:middle;}
-    & section#bottom {grid-area:bottom;}
+    & section#top {grid-area: top;}
+    & section#middle {grid-area: middle;}
+    & section#bottom {grid-area: bottom;}
 
 	& h5 {
-		margin:0; 
-		font-size:1.3em;
-		color:var(--secondary);
+		margin: 0; 
+		font-size: 1.3em;
+		color: var(--secondary);
 	}
 	& h6 {
-		margin:0; 
-		font-size:.8em;
-		color:var(--secondary);
+		margin: 0; 
+		font-size: .8em;
+		color: var(--secondary);
 	}
 
 	& > section {
-		padding:1rem;
-		display:flex;
-		gap:1rem;
+		display: flex;
+		padding: .5rem;
+		gap: 1rem;
 	}
 
 	& .card {
@@ -40,30 +36,30 @@ main.dashboard {
 		box-shadow: 0 0 25px #0001;
 		background-color: var(--bg);
 		overflow: hidden;
-		height:100%;
-		width:100%;
-		padding: calc(.5vh + .5rem) 1rem;
+		height: 100%;
+		width: 100%;
+		padding: calc(.33vh + .5rem) 1rem;
 	
-		& p {margin:0;}
+		& p {margin: 0;}
 		& p.name {font-size: 1em; font-weight: 700;}
 
 		& header {
-			grid-area:header;
-			display:flex;
+			grid-area: header;
+			display: flex;
 			justify-content: space-between;
 			margin-top: 2%;
-			margin-bottom:1em;
+			margin-bottom: 1em;
 		}
 
 		& ul {
-			height:calc(100% - 80px);
+			height: calc(100% - 80px);
 			overflow-y: scroll;
 		}
 
 		& p.money-block {
 			font-size: 1.5em;
 			font-weight: bold;
-			margin:6px 0;
+			margin: 6px 0;
 			& span {color: var(--bgf3);}
 		}
 
@@ -74,18 +70,27 @@ main.dashboard {
 	}
 }
 
+@media screen and (max-height: 900px) {
+	main.dashboard .card p.money-block {
+		font-size: 1em;
+	}
+	main.dashboard .card header {
+		margin-bottom: 3px;
+	}
+}
+
 main.dashboard > section#top {
 	& #budget-remaining {
 		& .progress-bar {
-			height:8px;
-			margin:6px 0;
+			height: 8px;
+			margin: 6px 0;
 			background-color: var(--bgb2);
 			border-radius: 5px;
 
 			& .progress {
 				background-image: linear-gradient(to right, var(--dblue), var(--lblue));
-				width:60%;
-				height:100%;
+				width: 60%;
+				height: 100%;
 				border-radius: 5px;
 			}
 		}
@@ -126,18 +131,28 @@ main.dashboard > section#top {
 }
 
 main.dashboard > section#middle {
-	display:grid;
+	display: grid;
 	grid-template: 100% / 1fr 2fr;
 
 	& #new-expense {
-		height:100%;
-		padding-right:2em;
+		height: 100%;
+		padding-right: 2em;
 		
 		& form {
-			display:flex;
-			flex-direction:column;
-			height:calc(100% - 50px);
+			display: flex;
+			flex-direction: column;
+			height: calc(100% - 50px);
 			overflow-y: scroll;
+			padding: 4% 0;
+
+			& div.input-block {
+				display: flex;
+				flex-wrap: wrap;
+				width: 100%;
+
+				& label {width: 80px;}
+				& input, select {min-width: 100%;}
+			}
 			
 			& .recurring-block {
 				margin-bottom: 1em;
@@ -146,7 +161,6 @@ main.dashboard > section#middle {
 				align-items: baseline;
 			}
 			
-			/* NEW TOGGLE SWITCH STYLING */
 			& .recurring-toggle-block {
 				margin: 1.5em 0;
 				padding: 1em;
@@ -178,7 +192,6 @@ main.dashboard > section#middle {
 				font-style: italic;
 			}
 
-			/* Toggle Switch Styles */
 			& .toggle-switch {
 				position: relative;
 				display: inline-block;
@@ -196,16 +209,13 @@ main.dashboard > section#middle {
 			& .toggle-slider {
 				position: absolute;
 				cursor: pointer;
-				top: 0;
-				left: 0;
-				right: 0;
-				bottom: 0;
+				inset: 0;
 				background-color: #ccc;
 				transition: 0.4s;
 				border-radius: 28px;
 			}
 
-			& .toggle-slider:before {
+			& .toggle-slider::before {
 				position: absolute;
 				content: "";
 				height: 20px;
@@ -217,7 +227,7 @@ main.dashboard > section#middle {
 				border-radius: 50%;
 			}
 
-			& .toggle-switch input:checked + .toggle-slider {
+			& .toggle-switch input checked + .toggle-slider {
 				background: linear-gradient(to right, var(--dblue), var(--lblue));
 			}
 
@@ -225,55 +235,56 @@ main.dashboard > section#middle {
 				box-shadow: 0 0 1px var(--dblue);
 			}
 
-			& .toggle-switch input:checked + .toggle-slider:before {
+			& .toggle-switch input:checked + .toggle-slider::before {
 				transform: translateX(24px);
 			}
 			
-			& label, button {margin-bottom:3px;}
+			& label, button {margin-bottom: 3px;}
 
 			& input, button, select {
-				padding:1% 10px;
-				border-radius:3px;
-				border:1px solid var(--bgf2);
-				height:10%;
-				max-height: 40px;
-				min-height:30px;
-				margin-bottom:4%;
+				padding: 1% 10px;
+				border-radius: 3px;
+				border: 1px solid var(--bgf2);
+				height: 2.2em;
+				margin-bottom: 4%;
 			}
-			& input[type=checkbox] {
-				margin:0;
-				padding:clamp(4px, 2%, .75em);
-				height:10pt;
-				aspect-ratio: 1/1;
-			}
-			& button {background-color: var(--brand-key); color:black;}
+			& button {background-color: var(--brand-key); color: black;}
 		}
 	}
 
 	& > div#spending-by-category {
-		height:100%;
-		display:block;
-		position:relative;
+		height: 100%;
+		display: block;
+		position: relative;
+	}
+}
+
+@media screen and (max-height: 900px) and  (min-width: 1000px) {
+	main.dashboard > section#middle #new-expense form div.input-block {
+		display: grid;
+		grid-template: auto / 80px auto;
+		& label {width: 80px;}
+		& input, select {min-width: 100%;}
 	}
 }
 
 main.dashboard > section#bottom {
 	& div#recent-transactions {
-		& li:first-of-type {background-color:var(--bgf1);}
+		& li:first-of-type {background-color: var(--bgf1);}
 		& li {
-			display:flex;
+			display: flex;
 			justify-content: space-between;
-			padding:2%;
-			border-top:1px solid var(--bgf2);
+			padding: 2%;
+			border-top: 1px solid var(--bgf2);
 
 				& span {
-					display:inline-block;
-					width:100%;
+					display: inline-block;
+					width: 100%;
 					display: flex;
-					gap:1em;
+					gap: 1em;
 
 					&:last-of-type {
-						width:50%;
+						width: 50%;
 						justify-content: space-around;
 					}
 				}
@@ -294,32 +305,32 @@ main.dashboard > section#bottom {
 
 	& div#recurring-expenses {
 		& li.controls-li {
-			display:grid;
+			display: grid;
 			grid-template: 60px / 60px auto 40px;
-			margin-bottom:.5em;
+			margin-bottom: .5em;
 			background-color: var(--bgf1);
 			border-radius: 6px;
-			border:.5px solid var(--bgf2);
+			border: .5px solid var(--bgf2);
 			
 			& div.text-block {
-				display:flex;
+				display: flex;
 				flex-direction: column;
 				justify-content: center;
 				align-items: start;
 
-				& p {font-size:12pt;}
-				& span {font-size:9pt; color:var(--secondary);}
+				& p {font-size: 12pt;}
+				& span {font-size: 9pt; color: var(--secondary);}
 			}
 
 			& div.right {
-				display:flex;
+				display: flex;
 				flex-direction: column;
 				justify-content: center;
-				margin-right:10px;
+				margin-right: 10px;
 				align-items: end;
 				& span {
 					font-size: 9pt; 
-					font-weight:bold;
+					font-weight: bold;
 					text-align: right;
 				}
 			}
@@ -327,44 +338,56 @@ main.dashboard > section#bottom {
 	}
 }
 
-
 figcaption {
-    display:flex;
-	gap:.5em;
+    display: flex;
+	flex-wrap: wrap;
+	gap: .5em;
+	flex-direction: column;
 	justify-content: center;
+	align-items: space-between;
+	height: 100%;
 
-	& div {width:max-content;display:inline-block;color: var(--col);}
+	& div {width: max-content;display: inline-block;}
 	& div > div::before {
-		content:"";
-		display:inline-block;
-		width:1em;
-		height:100%;
+		content: "";
+		display: inline-block;
+		width: 1em;
+		margin-right: .5em;
+		height: 1em;
 		background-color: var(--col);
 	}
 }
 
 figure {
-	height:75%;
+	height: 75%;
 	display: flex;
-	align-items:center;
+	align-items: center;
+	gap: 1em;
+
+	& .pie-container {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
 
 	& .pie-wrapper {
 		display: block;
-		margin:0 auto;
+		margin: 0 auto;
 		height: 90%;
 		aspect-ratio: 1/1;
 		border-radius: 55%;
-		overflow:hidden;
+		overflow: hidden;
 	}
 	& .pie-slices {
-		height:100%;
-		background-image:conic-gradient(
-			red 5deg,
-			orange 6deg 17deg,
-			yellow 18deg 44deg,
-			green 45deg 109deg,
-			blue 110deg 199deg,
-			purple 200deg
-		)
+		height: 100%;
+	}
+}
+
+@media screen and (max-width: 900px) {
+	figure {flex-direction: column;}
+	figcaption {flex-direction: row;}
+
+	@media screen and (max-height: 900px) {
+		figure .pie-container {height: 90%}
 	}
 }

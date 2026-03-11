@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import * as userService from '../services/userService';
+import { errToast } from '../utils/gizmos/index'
 
-// creates a global context / state we can use
 const UserContext = createContext()
 
 const getUserFromToken = () => {
@@ -9,27 +10,23 @@ const getUserFromToken = () => {
 
     try {
         const parsed = JSON.parse(atob(token.split(".")[1]));
-        // Support both legacy payload-wrapped tokens and plain JWT payloads.
         return parsed?.payload ?? parsed ?? null;
     } catch (error) {
-        console.error("@UserContext > getUserFromToken()", error);
         localStorage.removeItem("token");
         return null;
     }
 }
 
-// set up a provider component to provide or context to its children
+const getUser = () => JSON.parse(sessionStorage.getItem('userData'));
+
 function UserProvider({ children }){
-    // and children of this component will have access to the 
-    // state we define in here through the useContextHook
-    const [user, setUser] = useState(getUserFromToken())
+    const [user, setUser] = useState(getUser())
+    const [authToken, setAuthToken] = useState(getUserFromToken())
     
-    return <UserContext.Provider value={{
-        user,
-        setUser
-    }}>
+    return <UserContext.Provider value={{ user, setUser, authToken, setAuthToken }}>
         {children}
     </UserContext.Provider>
 }
 
-export { UserProvider, UserContext }
+const JITAuth = getUserFromToken;
+export { UserProvider, UserContext, JITAuth }

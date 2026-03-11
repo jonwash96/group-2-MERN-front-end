@@ -17,7 +17,7 @@ export default function ProfilePage() {
         setLoading(true);
         setError("");
 
-        const data = await userService.index(user._id);
+        const data = await userService.profile(user._id);
         setProfile(data);
       } catch (error) {
         setError(error?.message || "Faile to load profile");

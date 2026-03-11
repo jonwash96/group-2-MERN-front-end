@@ -1,22 +1,21 @@
 import { useState, useEffect, useContext, useMemo } from "react";
-import { Routes, Route, Navigate } from "react-router";
+import { Routes, Route, Navigate, redirect } from "react-router";
 import "./App.css";
 
-import { UserContext } from "./contexts/UserContext";
+import { UserContext, JITAuth } from "./contexts/UserContext";
 import Headbar from "./components/Headbar/Headbar";
-import Dashboard from "./components/Dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUpPage from "./pages/Auth/SignUpPage";
 import SignInPage from "./pages/Auth/SignInPage";
-import ExpensePage from "./pages/ExpensePage";
-import NewExpensePage from "./pages/NewExpensePage";
-import EditExpensePage from "./pages/EditExpensePage";
-import ExpenseShowPage from "./pages/ExpenseShowPage/ExpenseShowPage"
+import SignOutPage from "./pages/Auth/SignOutPage";
+import ExpensePage from "./pages/Expenses/ExpensePage";
+import NewExpensePage from "./pages/Expenses/NewExpensePage";
+import EditExpensePage from "./pages/Expenses/EditExpensePage";
+import ExpenseShowPage from "./pages/Expenses/ExpenseShowPage"
 import ProfilePage from "./pages/ProfilePage/ProfilePage"
-import BudgetsPage from "./pages/BudgetsPage";
-
+import BudgetsPage from "./pages/Budgets/BudgetsPage";
 import * as expenseService from "./services/expenseService";
-import * as authService from "./services/authService";
 import "./utils/gizmos/bancroft-proto";
 
 function getCurrentMonthValue(date = new Date()) {
@@ -26,7 +25,7 @@ function getCurrentMonthValue(date = new Date()) {
 }
 
 function RequireAuth({ isAuthed, children }) {
-  if (!isAuthed) return <Navigate to="/" replace />;
+  if (!isAuthed) return <Navigate to="/" replace />
   return children;
 }
 
@@ -40,17 +39,12 @@ function AppLayout({ children }) {
 }
 
 function App() {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [expenses, setExpenses] = useState([]);
-  // const [receipts, setReceipts] = useState();
-  // const [notifications, setNotifications] = useState();
-  // const [activity, setActivity] = useState();
-  const [uid, setUid] = useState();
   const [month, setMonth] = useState(() => getCurrentMonthValue());
   const [categoryBreakdown, setCategoryBreakdown] = useState([]); // from /expenses-by category
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [loggedInUserTest, setLoggedInUserTest] = useState(false);
 
   const handleSetMonth = (input) => setMonth(input);
 
@@ -84,7 +78,7 @@ function App() {
     [expenses],
   );
 
-  const isAuthed = user?._id;
+  const isAuthed = JITAuth();
 
   return (
     <>
@@ -108,7 +102,7 @@ function App() {
         {/* Protected */}
         <Route
           path="/sign-out"
-          element={<LandingPage signout={true} />}
+          element={<SignOutPage />}
         />
 
         <Route
